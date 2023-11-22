@@ -12,31 +12,51 @@
 #include <stdio.h>
 #include <string.h>
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
 typedef struct sommet
 {
     int num;
     int* tabExclusion;
     int nbrStep;
+
 }t_sommet;
+
 int detecterNombreLignes(char* NOMFICHIER){
     FILE *f;
-    int nombrePresent,nombrePrime;
+    int nombrePresent;
     int nombreLignes = 0;
+
     f = fopen(NOMFICHIER,"r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
         return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-    while (fscanf(f, "%d %d", &nombrePresent,&nombrePrime) == 2){
-        nombreLignes++;
-    }
+
+    do {
+        fscanf(f,"%d",&nombrePresent); // Lecture du nombre
+        fscanf(f," "); // Consomme l'espace après le nombre
+        fscanf(f,"%d"); // Lis l'autre nombre
+        fscanf(f,"\n"); // Passe à la ligne suivante
+
+        if (nombrePresent != 0) {
+            nombreLignes++; // Incrémente le compteur si le nombre est différent de zero ou nul
+        }
+    } while (nombrePresent != 0); // Continue jusqu'à ce que le nombre lu soit zero
+
     fclose(f); // Ferme le fichier
-   // printf("nombre de lignes est %d", nombreLignes);
+    printf("nombre de lignes est %d", nombreLignes);
     return nombreLignes;
 }
+
+void allouerTabSommet(int nbrSommet,t_sommet *tabsommet,char *NOMFICHIER)
+{
+    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
+    for (int i = 0; i < nbrSommet; i++)
+    {
+        tabsommet[i].nbrStep = detecterNombreLignes(NOMFICHIER);
+    }
+
+}
+
 void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 {
     FILE *f;
@@ -91,4 +111,11 @@ int detecterPlusGrandNombre(char *NOMFICHIER){
     return plusGrandNombre;
 }
 
+void BoxExclusion(t_sommet *tabsommet)
+{
+    printf("----------------------------------");
+    printf("_________Box 1 : ");
+    for (int i = 0; i < tabsommet[0].nbrStep; ++i) {
 
+    }
+}
