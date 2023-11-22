@@ -20,32 +20,27 @@ typedef struct sommet
 
 }t_sommet;
 
-int detecterNombreLignes(char* NOMFICHIER){
+int detecterNombreLignes(char* NOMFICHIER) {
     FILE *f;
     int nombrePresent;
     int nombreLignes = 0;
 
-    f = fopen(NOMFICHIER,"r");
+    f = fopen(NOMFICHIER, "r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
         return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
 
-    do {
-        fscanf(f,"%d",&nombrePresent); // Lecture du nombre
-        fscanf(f," "); // Consomme l'espace après le nombre
-        fscanf(f,"%d"); // Lis l'autre nombre
-        fscanf(f,"\n"); // Passe à la ligne suivante
-
-        if (nombrePresent != 0) {
-            nombreLignes++; // Incrémente le compteur si le nombre est différent de zero ou nul
-        }
-    } while (nombrePresent != 0); // Continue jusqu'à ce que le nombre lu soit zero
+    while (fscanf(f, "%d%*[^\n]", &nombrePresent) == 1) {
+        fgetc(f); // Lire et ignorer le saut de ligne
+        nombreLignes++; // Incrémente le compteur pour chaque ligne commençant par un nombre
+    }
 
     fclose(f); // Ferme le fichier
-    printf("nombre de lignes est %d", nombreLignes);
+   // printf("Nombre de lignes %d\n", nombreLignes);
     return nombreLignes;
 }
+
 
 void allouerTabSommet(int nbrSommet,t_sommet *tabsommet,char *NOMFICHIER)
 {
