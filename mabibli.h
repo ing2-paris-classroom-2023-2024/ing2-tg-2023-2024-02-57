@@ -6,3 +6,8 @@
 #define ING2_TG_2023_2024_02_57_MABIBLI_H
 
 #endif //ING2_TG_2023_2024_02_57_MABIBLI_H
+
+#include "time.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
