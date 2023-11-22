@@ -12,42 +12,31 @@
 #include <stdio.h>
 #include <string.h>
 
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 typedef struct sommet
 {
     int num;
     int* tabExclusion;
     int nbrStep;
-
 }t_sommet;
-
 int detecterNombreLignes(char* NOMFICHIER){
     FILE *f;
-    int nombrePresent;
+    int nombrePresent,nombrePrime;
     int nombreLignes = 0;
-
     f = fopen(NOMFICHIER,"r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
         return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-
-    do {
-        fscanf(f,"%d",&nombrePresent); // Lecture du nombre
-        fscanf(f," "); // Consomme l'espace après le nombre
-        fscanf(f,"%d"); // Lis l'autre nombre
-        fscanf(f,"\n"); // Passe à la ligne suivante
-
-        if (nombrePresent != 0) {
-            nombreLignes++; // Incrémente le compteur si le nombre est différent de zero ou nul
-        }
-    } while (nombrePresent != 0); // Continue jusqu'à ce que le nombre lu soit zero
-
+    while (fscanf(f, "%d %d", &nombrePresent,&nombrePrime) == 2){
+        nombreLignes++;
+    }
     fclose(f); // Ferme le fichier
-    printf("nombre de lignes est %d", nombreLignes);
+   // printf("nombre de lignes est %d", nombreLignes);
     return nombreLignes;
 }
-
-
 void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 {
     FILE *f;
@@ -68,20 +57,38 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         {
             compteur++;
         }
-        tabsommet[temp1].tabExclusion[compteur] = realloc(tabsommet[temp1].tabExclusion,compteur+1);
-        }
-        tabsommet[temp1].tabExclusion[compteur] = temp2;
-        compteur = 0;
-        while (tabsommet[temp2].tabExclusion[compteur] != NULL)
-        {
-            compteur++;
-            if(tabsommet[temp2].tabExclusion[compteur] == NULL)
-            {
-
-            }
-        }
-        tabsommet[temp2].tabExclusion[compteur] = temp1;
-        compteur = 0;
+        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion,(compteur+1)* sizeof(int));
     }
-
+    tabsommet[temp1].tabExclusion[compteur] = temp2;
+    compteur = 0;
+    while (tabsommet[temp2].tabExclusion[compteur] != NULL)
+    {
+        compteur++;
+        if(tabsommet[temp2].tabExclusion[compteur] == NULL)
+        {
+        }
+    }
+    tabsommet[temp2].tabExclusion[compteur] = temp1;
+    compteur = 0;
 }
+
+int detecterPlusGrandNombre(char *NOMFICHIER){
+    FILE *f;
+    int plusGrandNombre=0;
+    int nombre1, nombre2;
+    char poubelle;
+    f = fopen(NOMFICHIER, "r");
+    if (f == NULL) {
+        printf("Erreur ouverture du fichier.\n");
+        return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
+    }
+    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); ++i) {
+        fscanf(f,"%d %d\n",&nombre1,&nombre2);
+        if(plusGrandNombre < nombre1){plusGrandNombre = nombre1;}
+        if(plusGrandNombre < nombre2){plusGrandNombre = nombre2;}
+    }
+    printf("le plus grand nombre est %d\n",plusGrandNombre);
+    return plusGrandNombre;
+}
+
+

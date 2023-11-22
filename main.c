@@ -7,5 +7,6 @@
 
 int main()
 {
-    printf("hello ECE");
+    printf("hello ECE %d\n",detecterNombreLignes("exclusion.txt"));
+    detecterPlusGrandNombre("exclusion.txt");
 };
