@@ -14,7 +14,6 @@
 
 typedef struct sommet
 {
-    int num;
     int* tabExclusion;
     int nbrStep;
 
@@ -47,6 +46,15 @@ int detecterNombreLignes(char* NOMFICHIER){
     return nombreLignes;
 }
 
+void allouerTabSommet(int nbrSommet,t_sommet *tabsommet,char *NOMFICHIER)
+{
+    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
+    for (int i = 0; i < nbrSommet; i++)
+    {
+        tabsommet[i].nbrStep = detecterNombreLignes(NOMFICHIER);
+    }
+
+}
 
 void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 {
@@ -58,7 +66,7 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         printf("Erreur lors de l'ouverture du fichier.\n");
         return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-    for (int i = 0; i < tabsommet[0].nbrStep ; i++)
+    for (int i = 0; i < detecterNombreLignes("../exclusion.txt") ; i++)
     {
         fscanf(f,"%d",&temp1);// Lecture du nombre
         fscanf(f," ");// Consomme l'espace après le nombre
@@ -68,20 +76,26 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         {
             compteur++;
         }
-        tabsommet[temp1].tabExclusion[compteur] = realloc(tabsommet[temp1].tabExclusion,compteur+1);
-        }
-        tabsommet[temp1].tabExclusion[compteur] = temp2;
-        compteur = 0;
-        while (tabsommet[temp2].tabExclusion[compteur] != NULL)
+        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion,compteur+1);// ajoute une allocation pour l'exclusion
+
+        tabsommet[temp1].tabExclusion[compteur] = temp2;// donne une valeur à l'allocation ajouté, c'est la valeur de l'exclusion
+        compteur = 0; // le compteur se met à zéro pour lire le fichier dans le sens inverse
+        while (tabsommet[temp2].tabExclusion[compteur] != NULL)// on recommence le processus mais dans l'autre sens car l'exclusion se fait dans les deux sens
         {
             compteur++;
-            if(tabsommet[temp2].tabExclusion[compteur] == NULL)
-            {
-
-            }
         }
+        tabsommet[temp2].tabExclusion = realloc(tabsommet[temp1].tabExclusion,compteur+1);
         tabsommet[temp2].tabExclusion[compteur] = temp1;
         compteur = 0;
     }
 
+}
+
+void BoxExclusion(t_sommet *tabsommet)
+{
+    printf("----------------------------------");
+    printf("_________Box 1 : ");
+    for (int i = 0; i < tabsommet[0].nbrStep; ++i) {
+
+    }
 }
