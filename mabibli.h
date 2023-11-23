@@ -171,6 +171,7 @@ void BoxExclusion(t_sommet *tabsommet)
         }
     }
     printf("__________\n");
+    free(box1);
 }
 
 void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cree un tableau de precedence pour chaque sommet
@@ -224,4 +225,5 @@ void boxPrecedences(t_sommet *tabsommet){
        printf("\n %d a %d antecedant",i,compteur); /// TODO pourquoi element 35 possede un antecedant alors qu'il n'existe pas ?
         compteur=0; /// TODO sinon juste baisser boucle de 1
     }
+    free(box1); // libere l'espace des boxs
 }
