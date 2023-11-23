@@ -72,14 +72,14 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 
     int nbrLigne = detecterNombreLignes(NOMFICHER);
 
-    for (int i = 0; i < nbrLigne ; i++)
+    for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
     {
 
         fscanf(f, "%d", &temp1);// Lecture du nombre
         fscanf(f, " ");// Consomme l'espace après le nombre
         fscanf(f, "%d", &temp2); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
-        while (tabsommet[temp1].tabExclusion[compteur] != 0) ///
+        while (tabsommet[temp1].tabExclusion[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
         {
             compteur++;
             if (tabsommet[temp1].tabExclusion[compteur] == 0) {
@@ -87,15 +87,15 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
             }
 
         }
-        tabsommet[temp1].tabExclusion[compteur] = temp2;
-        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));
+        tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
+        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
         tabsommet[temp1].tabExclusion[compteur + 1] = 0;
 
         printf("%d %d %d ",temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
 
         compteur = 0;
 
-        while (tabsommet[temp2].tabExclusion[compteur] != 0)
+        while (tabsommet[temp2].tabExclusion[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
         {
             compteur++;
 
@@ -110,7 +110,7 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         printf("%d \n",tabsommet[temp2].tabExclusion[compteur]);
         compteur = 0;
     }
-    fclose(f);
+    fclose(f);// fermeture du fichier
 }
 
 int detecterPlusGrandNombre(char *NOMFICHIER){
