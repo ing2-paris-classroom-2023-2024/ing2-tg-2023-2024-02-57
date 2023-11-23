@@ -24,5 +24,6 @@ int main()
     strcpy(NOMFICHIER,"../precedences.txt");
     precedences(NOMFICHIER,tabsommet);
     boxPrecedences(tabsommet);
+    free(tabsommet); //libere l'espace du tableau de sommet
     return 17;
 };
