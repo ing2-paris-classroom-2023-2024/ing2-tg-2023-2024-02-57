@@ -18,10 +18,11 @@ int main()
 
     //printf("%d\n",tabsommet[0].nbrStep);
 
-    //exclusion(NOMFICHIER,tabsommet);
+    exclusion(NOMFICHIER,tabsommet);
 
     //BoxExclusion(tabsommet);
     strcpy(NOMFICHIER,"../precedences.txt");
     precedences(NOMFICHIER,tabsommet);
+    boxPrecedences(tabsommet);
     return 17;
 };

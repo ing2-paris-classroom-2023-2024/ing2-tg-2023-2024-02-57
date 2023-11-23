@@ -197,8 +197,31 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){
         tabsommet[temp2].tabPrecedence[compteur]=temp1;
         tabsommet[temp2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2));
         tabsommet[temp2].tabPrecedence[compteur + 1] = 0;
-      //  printf("%d",tabsommet[temp2].tabPrecedence[0]);
         compteur = 0;
     }
     fclose(f);
+}
+void boxPrecedences(t_sommet *tabsommet){
+    int* box1;
+    int tailleBox=0;
+    box1 = malloc(sizeof (int)*2);
+    box1[0]=0;
+    int condition = 0;
+    int compteur = 0;
+    printf("----------------------------------\n");
+    printf("_________Box 1 : ");
+    int nbOperations= tabsommet[0].nbrStep;
+
+    for (int i = 1; i <= nbOperations; i++){
+        while (tabsommet[i].tabPrecedence[compteur] != 0) ///
+        {
+            compteur++;
+            if (tabsommet[i].tabPrecedence[compteur] == 0) {
+                break;
+            }
+
+        }
+        printf("element %d a %d antecedant\n",i,compteur);
+        compteur=0;
+    }
 }
