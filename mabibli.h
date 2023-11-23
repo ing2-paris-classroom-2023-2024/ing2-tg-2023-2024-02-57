@@ -17,7 +17,7 @@ typedef struct sommet
     int num;
     int* tabExclusion;
     int nbrStep;
-
+    int* tabPrecedence;
 }t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER) {
@@ -51,6 +51,8 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)
         tabsommet[i].nbrStep = nbrSommet;
         tabsommet[i].tabExclusion = malloc(sizeof (int ) * 2);
         tabsommet[i].tabExclusion[0] = 0;
+        tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);
+        tabsommet[i].tabPrecedence[0]=0;
     }
 
     return tabsommet;
@@ -169,4 +171,34 @@ void BoxExclusion(t_sommet *tabsommet)
         }
     }
     printf("__________\n");
+}
+
+void precedences(char *NOMFICHIER,t_sommet *tabsommet){
+    FILE *f;
+    int temp1,temp2;
+    int compteur = 0;
+    f = fopen(NOMFICHIER,"r");
+    if (f == NULL) {
+        printf("Erreur lors de l'ouverture du fichier.\n");
+        return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
+    }
+
+    int nbrLigne = detecterNombreLignes(NOMFICHIER);
+    for (int i = 0; i < nbrLigne; ++i) {
+        fscanf(f,"%d %d\n",&temp1,&temp2);
+        printf("%d %d\n",temp1,temp2);
+        while (tabsommet[temp2].tabPrecedence[compteur] != 0)
+        {
+            compteur++;
+            if (tabsommet[temp2].tabPrecedence[compteur] == 0) {
+                break;
+            }
+        }
+        tabsommet[temp2].tabPrecedence[compteur]=temp1;
+        tabsommet[temp2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2));
+        tabsommet[temp2].tabPrecedence[compteur + 1] = 0;
+      //  printf("%d",tabsommet[temp2].tabPrecedence[0]);
+        compteur = 0;
+    }
+    fclose(f);
 }
