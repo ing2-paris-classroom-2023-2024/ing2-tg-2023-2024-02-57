@@ -173,7 +173,7 @@ void BoxExclusion(t_sommet *tabsommet)
     printf("__________\n");
 }
 
-void precedences(char *NOMFICHIER,t_sommet *tabsommet){
+void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cree un tableau de precedence pour chaque sommet
     FILE *f;
     int temp1,temp2;
     int compteur = 0;
@@ -183,21 +183,21 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){
         return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
 
-    int nbrLigne = detecterNombreLignes(NOMFICHIER);
+    int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier precedences.txt
     for (int i = 0; i < nbrLigne; ++i) {
-        fscanf(f,"%d %d\n",&temp1,&temp2);
-        printf("%d %d\n",temp1,temp2);
+        fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
+      //  printf("%d %d\n",temp1,temp2);
         while (tabsommet[temp2].tabPrecedence[compteur] != 0)
         {
             compteur++;
-            if (tabsommet[temp2].tabPrecedence[compteur] == 0) {
+            if (tabsommet[temp2].tabPrecedence[compteur] == 0) { //deroule jusqu'a la fin du tableau de precedences
                 break;
             }
         }
-        tabsommet[temp2].tabPrecedence[compteur]=temp1;
-        tabsommet[temp2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2));
-        tabsommet[temp2].tabPrecedence[compteur + 1] = 0;
-        compteur = 0;
+        tabsommet[temp2].tabPrecedence[compteur]=temp1; // rajoute l'element a la fin
+        tabsommet[temp2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2)); // realloue un nouvelle espace plus grand
+        tabsommet[temp2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
+        compteur = 0; // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
     }
     fclose(f);
 }
@@ -221,7 +221,7 @@ void boxPrecedences(t_sommet *tabsommet){
             }
 
         }
-        printf("element %d a %d antecedant\n",i,compteur);
-        compteur=0;
+       printf("\n %d a %d antecedant",i,compteur); /// TODO pourquoi element 35 possede un antecedant alors qu'il n'existe pas ?
+        compteur=0; /// TODO sinon juste baisser boucle de 1
     }
 }
