@@ -113,23 +113,23 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
     fclose(f);// fermeture du fichier
 }
 
-int detecterPlusGrandNombre(char *NOMFICHIER){
+int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le plus grand ombre du fichier afin de donnaitre le nombre d'étape
     FILE *f;
     int plusGrandNombre=0;
     int nombre1, nombre2;
-    f = fopen(NOMFICHIER, "r");
+    f = fopen(NOMFICHIER, "r");// ouverture du fichier
     if (f == NULL) {
         printf("Erreur ouverture du fichier.\n");
         return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); ++i) {
-        fscanf(f,"%d %d\n",&nombre1,&nombre2);
-        if(plusGrandNombre < nombre1){plusGrandNombre = nombre1;}
-        if(plusGrandNombre < nombre2){plusGrandNombre = nombre2;}
+    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); ++i) {// tant que le nombre de ligne du fichier n'est pas atteinte:
+        fscanf(f,"%d %d\n",&nombre1,&nombre2);// scanner les deux nombres présents sur une ligne
+        if(plusGrandNombre < nombre1){plusGrandNombre = nombre1;}// si la variable 'plusGrandNombre' est plus petite que nombre1 alors elle prend cette valeur
+        if(plusGrandNombre < nombre2){plusGrandNombre = nombre2;}// meme processus pour le nombre 2
     }
     fclose(f);
-    printf("le plus grand nombre est %d\n",plusGrandNombre);
-    return plusGrandNombre;
+    printf("le plus grand nombre est %d\n",plusGrandNombre);// affichage du plus grand nombre
+    return plusGrandNombre;// on renvoie le plus grand nombre
 }
 
 void BoxExclusion(t_sommet *tabsommet)
