@@ -42,13 +42,18 @@ int detecterNombreLignes(char* NOMFICHIER) {
 }
 
 
-void allouerTabSommet(int nbrSommet,t_sommet *tabsommet,char *NOMFICHIER)
+t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)
 {
+    t_sommet *tabsommet;
     tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
-    for (int i = 0; i < nbrSommet; i++)
+    for (int i = 0; i <= nbrSommet; i++)
     {
-        tabsommet[i].nbrStep = detecterNombreLignes(NOMFICHIER);
+        tabsommet[i].nbrStep = nbrSommet;
+        tabsommet[i].tabExclusion = malloc(sizeof (int ) * 2);
+        tabsommet[i].tabExclusion[0] = 0;
     }
+
+    return tabsommet;
 
 }
 
@@ -62,36 +67,54 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         printf("Erreur lors de l'ouverture du fichier.\n");
         return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-    for (int i = 0; i < tabsommet[0].nbrStep ; i++)
+
+    int nbrLigne = detecterNombreLignes(NOMFICHER);
+
+    for (int i = 0; i < nbrLigne ; i++)
     {
-        fscanf(f,"%d",&temp1);// Lecture du nombre
-        fscanf(f," ");// Consomme l'espace après le nombre
-        fscanf(f,"%d",&temp2); // Lis l'autre nombre
-        fscanf(f,"\n");// Passe à la ligne suivante
-        while (tabsommet[temp1].tabExclusion[compteur] != NULL) ///
+
+        fscanf(f, "%d", &temp1);// Lecture du nombre
+        fscanf(f, " ");// Consomme l'espace après le nombre
+        fscanf(f, "%d", &temp2); // Lis l'autre nombre
+        fscanf(f, "\n");// Passe à la ligne suivante
+        while (tabsommet[temp1].tabExclusion[compteur] != 0) ///
         {
             compteur++;
+            if (tabsommet[temp1].tabExclusion[compteur] == 0) {
+                break;
+            }
+
         }
-        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion,(compteur+1)* sizeof(int));
-    }
-    tabsommet[temp1].tabExclusion[compteur] = temp2;
-    compteur = 0;
-    while (tabsommet[temp2].tabExclusion[compteur] != NULL)
-    {
-        compteur++;
-        if(tabsommet[temp2].tabExclusion[compteur] == NULL)
+        tabsommet[temp1].tabExclusion[compteur] = temp2;
+        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));
+        tabsommet[temp1].tabExclusion[compteur + 1] = 0;
+
+        printf("%d %d %d ",temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
+
+        compteur = 0;
+
+        while (tabsommet[temp2].tabExclusion[compteur] != 0)
         {
+            compteur++;
+
+            if (tabsommet[temp2].tabExclusion[compteur] == 0)
+            {
+                break;
+            }
         }
+        tabsommet[temp2].tabExclusion[compteur] = temp1;
+        tabsommet[temp2].tabExclusion = realloc(tabsommet[temp2].tabExclusion, sizeof(int) * (compteur + 2));
+        tabsommet[temp2].tabExclusion[compteur + 1] = 0;
+        printf("%d \n",tabsommet[temp2].tabExclusion[compteur]);
+        compteur = 0;
     }
-    tabsommet[temp2].tabExclusion[compteur] = temp1;
-    compteur = 0;
+    fclose(f);
 }
 
 int detecterPlusGrandNombre(char *NOMFICHIER){
     FILE *f;
     int plusGrandNombre=0;
     int nombre1, nombre2;
-    char poubelle;
     f = fopen(NOMFICHIER, "r");
     if (f == NULL) {
         printf("Erreur ouverture du fichier.\n");
@@ -102,15 +125,48 @@ int detecterPlusGrandNombre(char *NOMFICHIER){
         if(plusGrandNombre < nombre1){plusGrandNombre = nombre1;}
         if(plusGrandNombre < nombre2){plusGrandNombre = nombre2;}
     }
+    fclose(f);
     printf("le plus grand nombre est %d\n",plusGrandNombre);
     return plusGrandNombre;
 }
 
 void BoxExclusion(t_sommet *tabsommet)
 {
-    printf("----------------------------------");
+    int *box1;
+    int tailleBox = 0;
+    box1 = malloc(sizeof (int)*2);
+    int compteurExclusion;
+    box1[0] = 0;
+    int condition = 0;
+    printf("----------------------------------\n");
     printf("_________Box 1 : ");
-    for (int i = 0; i < tabsommet[0].nbrStep; ++i) {
+    for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+    {
+        condition = 0;
 
+        for (int j = 0; j <= tailleBox; j++)
+        {
+            compteurExclusion = 0;
+
+
+            while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
+            {
+                if (tabsommet[i].tabExclusion[compteurExclusion] == box1[j])
+                {
+                    condition = 1;
+                }
+                compteurExclusion++;
+            }
+        }
+        if (!condition)
+        {
+
+            box1[tailleBox] = i;
+            printf(" %d ",box1[tailleBox]);
+            tailleBox++;
+            box1 = realloc(box1,sizeof (int )* (tailleBox+2));
+            box1[tailleBox] = 0;
+        }
     }
+    printf("__________\n");
 }
