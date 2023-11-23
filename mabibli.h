@@ -42,20 +42,20 @@ int detecterNombreLignes(char* NOMFICHIER) {
 }
 
 
-t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)
+t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
 {
     t_sommet *tabsommet;
     tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
-    for (int i = 0; i <= nbrSommet; i++)
+    for (int i = 0; i <= nbrSommet; i++)// initialisation pour chaque sommet
     {
-        tabsommet[i].nbrStep = nbrSommet;
-        tabsommet[i].tabExclusion = malloc(sizeof (int ) * 2);
+        tabsommet[i].nbrStep = nbrSommet;// initialisation ici du nombre d'etape
+        tabsommet[i].tabExclusion = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau d'exclusion pour le sommet i
         tabsommet[i].tabExclusion[0] = 0;
-        tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);
+        tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
     }
 
-    return tabsommet;
+    return tabsommet;// renvoie l'initialisation de chaque sommet
 
 }
 
