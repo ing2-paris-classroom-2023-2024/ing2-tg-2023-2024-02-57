@@ -214,16 +214,17 @@ void boxPrecedences(t_sommet *tabsommet){
     int nbOperations= tabsommet[0].nbrStep;
 
     for (int i = 1; i <= nbOperations; i++){
-        while (tabsommet[i].tabPrecedence[compteur] != 0) ///
+        while (tabsommet[i].tabPrecedence[compteur] != 0)
         {
+            printf("%d a comme antecedant %d\n",i,tabsommet[i].tabPrecedence[compteur]);
             compteur++;
             if (tabsommet[i].tabPrecedence[compteur] == 0) {
                 break;
             }
 
         }
-       printf("\n %d a %d antecedant",i,compteur); /// TODO pourquoi element 35 possede un antecedant alors qu'il n'existe pas ?
-        compteur=0; /// TODO sinon juste baisser boucle de 1
+       printf("  %d a %d antecedant\n\n",i,compteur);
+        compteur=0;
     }
     free(box1); // libere l'espace des boxs
 }
