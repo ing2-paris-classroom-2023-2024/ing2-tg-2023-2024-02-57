@@ -213,18 +213,24 @@ void boxPrecedences(t_sommet *tabsommet){
     printf("_________Box 1 : ");
     int nbOperations= tabsommet[0].nbrStep;
 
+
+    free(box1); // libere l'espace des boxs
+}
+
+void impressionSommetPrecedence(t_sommet *tabsommet){
+    int nbOperations= tabsommet[0].nbrStep;
+    int compteur = 0;
     for (int i = 1; i <= nbOperations; i++){
         while (tabsommet[i].tabPrecedence[compteur] != 0)
         {
-            printf("%d a comme antecedant %d\n",i,tabsommet[i].tabPrecedence[compteur]);
+            printf("%d a comme antecedant %d\n",i,tabsommet[i].tabPrecedence[compteur]); ///montre les precedences de chaque tache
             compteur++;
             if (tabsommet[i].tabPrecedence[compteur] == 0) {
-                break;
+                break; // parcourt le tableau de precedence jusqua la fin
             }
 
         }
-       printf("  %d a %d antecedant\n\n",i,compteur);
+        printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
         compteur=0;
     }
-    free(box1); // libere l'espace des boxs
 }
