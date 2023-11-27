@@ -85,7 +85,6 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
             if (tabsommet[temp1].tabExclusion[compteur] == 0) {
                 break;
             }
-
         }
         tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
         tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
