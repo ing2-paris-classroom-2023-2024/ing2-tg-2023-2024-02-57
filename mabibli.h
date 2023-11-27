@@ -11,6 +11,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#define MAX_SIZE 100
 
 typedef struct sommet
 {
@@ -205,6 +206,30 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
         compteur = 0; // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
     }
     fclose(f);
+}
+
+void operation(char *NOMFICHIER,t_sommet *tabsommet){
+    FILE *f;
+    int temp1,temp2;
+    int numeros[MAX_SIZE];
+    double temps[MAX_SIZE];
+    int compteur = 0;
+    f = fopen(NOMFICHIER,"r");
+    if (f == NULL) {
+        printf("Erreur lors de l'ouverture du fichier.\n");
+        return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
+    }
+    int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier operation.txt
+    for (compteur = 0; compteur < nbrLigne; compteur++) {
+        fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
+        numeros[compteur] = tabsommet[temp1].tabPrecedence[compteur];
+        temps[compteur] = tabsommet[temp2].tabOperation[compteur];
+    }
+    fclose(f);
+    compteur=0;
+    for (compteur = 0; compteur < nbrLigne; compteur++) {
+        printf("%d\t%.2f\n", numeros[compteur], temps[compteur]);
+    }
 }
 void boxPrecedences(t_sommet *tabsommet){
     int* box1;

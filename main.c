@@ -31,6 +31,7 @@ int main()
 
     strcpy(NOMFICHIER1, "../operation.txt");
     strcpy(NOMFICHIER, "../temps_de_cycle.txt");
+    operation(NOMFICHIER1, tabsommet);
 
     return 17;
 };
