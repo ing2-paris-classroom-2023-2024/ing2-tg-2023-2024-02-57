@@ -20,11 +20,11 @@ int main()
 
     exclusion(NOMFICHIER,tabsommet);
 
-    //BoxExclusion(tabsommet);
-    strcpy(NOMFICHIER,"../precedences.txt");
-    precedences(NOMFICHIER,tabsommet);
-    impressionSommetPrecedence(tabsommet);
-    boxPrecedences(tabsommet);
-    free(tabsommet); //libere l'espace du tableau de sommet
+    BoxExclusion(tabsommet);
+    //strcpy(NOMFICHIER,"../precedences.txt");
+    //precedences(NOMFICHIER,tabsommet);
+    //impressionSommetPrecedence(tabsommet);
+    //boxPrecedences(tabsommet);
+    //free(tabsommet); //libere l'espace du tableau de sommet
     return 17;
 };
