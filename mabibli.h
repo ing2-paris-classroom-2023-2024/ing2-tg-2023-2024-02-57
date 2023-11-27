@@ -18,6 +18,8 @@ typedef struct sommet
     int* tabExclusion;
     int nbrStep;
     int* tabPrecedence;
+    int* tabOperation;
+    int* tabTemps_cycle;
 }t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER) {
@@ -53,10 +55,12 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabExclusion[0] = 0;
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
+        tabsommet[i].tabOperation = malloc(sizeof (int) *2);
+        tabsommet[i].tabOperation[0]=0;
+        tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2);
+        tabsommet[i].tabTemps_cycle[0]=0;
     }
-
     return tabsommet;// renvoie l'initialisation de chaque sommet
-
 }
 
 void exclusion(char* NOMFICHER,t_sommet* tabsommet)
