@@ -20,6 +20,7 @@ typedef struct sommet
     int nbrStep;
     int* tabPrecedence;
     int* tabOperation;
+    //float* tabOperation1;
     int* tabTemps_cycle;
 }t_sommet;
 
@@ -56,10 +57,12 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabExclusion[0] = 0;
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
-        tabsommet[i].tabOperation = malloc(sizeof (int) *2);
+        tabsommet[i].tabOperation = malloc(sizeof (int ) * 2);
         tabsommet[i].tabOperation[0]=0;
-        tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2);
+        tabsommet[i].tabTemps_cycle = malloc(sizeof (int )* 2);
         tabsommet[i].tabTemps_cycle[0]=0;
+        //tabsommet[i].tabOperation1 = malloc(sizeof (float )* 2);
+        //tabsommet[i].tabOperation1[0]=0;
     }
     return tabsommet;// renvoie l'initialisation de chaque sommet
 }
@@ -208,29 +211,60 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     fclose(f);
 }
 
-void operation(char *NOMFICHIER,t_sommet *tabsommet){
+/*void operation(char *NOMFICHIER,t_sommet *tabsommet){
     FILE *f;
-    int temp1,temp2;
-    int numeros[MAX_SIZE];
-    double temps[MAX_SIZE];
+    int temp1;
+    float temp2;
+    int temp3;
     int compteur = 0;
     f = fopen(NOMFICHIER,"r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
         return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
-    int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier operation.txt
-    for (compteur = 0; compteur < nbrLigne; compteur++) {
-        fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
-        numeros[compteur] = tabsommet[temp1].tabPrecedence[compteur];
-        temps[compteur] = tabsommet[temp2].tabOperation[compteur];
+
+    int nbrLigne = detecterNombreLignes(NOMFICHIER);
+
+    for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
+    {
+
+        fscanf(f, "%d", &temp1);// Lecture du nombre
+        fscanf(f, " ");// Consomme l'espace après le nombre
+        fscanf(f, "%f", &temp2); // Lis l'autre nombre
+        fscanf(f, "\n");// Passe à la ligne suivante
+        while (tabsommet[temp1].tabOperation[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
+        {
+            compteur++;
+            if (tabsommet[temp1].tabOperation[compteur] == 0) {
+                break;
+            }
+
+        }
+        tabsommet[temp1].tabOperation1[compteur] = temp2;// on associe les valeurs exclues
+        tabsommet[temp1].tabOperation1 = realloc(tabsommet[temp1].tabOperation1, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
+        tabsommet[temp1].tabOperation1[compteur + 1] = 0;
+
+        printf("%d %.2f %.2f",temp1,temp2,tabsommet[temp1].tabOperation1[compteur]);
+
+        compteur = 0;
+
+        while (tabsommet[(int)temp2].tabOperation[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
+        {
+            compteur++;
+
+            if (tabsommet[(int)temp2].tabOperation[compteur] == 0)
+            {
+                break;
+            }
+        }
+        tabsommet[(int)temp2].tabOperation[compteur] = temp1;
+        tabsommet[(int)temp2].tabOperation= realloc(tabsommet[(int)temp2].tabOperation, sizeof(int) * (compteur + 2));
+        tabsommet[(int)temp2].tabOperation[compteur + 1] = 0;
+        printf("%d\n",tabsommet[(int)temp2].tabOperation[compteur]);
+        compteur = 0;
     }
-    fclose(f);
-    compteur=0;
-    for (compteur = 0; compteur < nbrLigne; compteur++) {
-        printf("%d\t%.2f\n", numeros[compteur], temps[compteur]);
-    }
-}
+    fclose(f);// fermeture du fichier
+}*/
 void boxPrecedences(t_sommet *tabsommet){
     int* box1;
     int tailleBox=0;

@@ -8,8 +8,6 @@
 int main()
 {
     char NOMFICHIER[32];
-    char NOMFICHIER1[32];
-    char NOMFICHIER2[32];
     strcpy(NOMFICHIER,"../exclusion.txt");
     printf("hello ECE %d\n",detecterNombreLignes(NOMFICHIER));
     detecterPlusGrandNombre(NOMFICHIER);
@@ -29,9 +27,9 @@ int main()
     //boxPrecedences(tabsommet);
     //free(tabsommet); //libere l'espace du tableau de sommet
 
-    strcpy(NOMFICHIER1, "../operation.txt");
-    strcpy(NOMFICHIER, "../temps_de_cycle.txt");
-    operation(NOMFICHIER1, tabsommet);
+    //strcpy(NOMFICHIER, "../operation.txt");
+    //operation(NOMFICHIER, tabsommet);
+    //strcpy(NOMFICHIER, "../temps_de_cycle.txt");
 
     return 17;
 };
