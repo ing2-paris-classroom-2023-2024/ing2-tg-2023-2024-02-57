@@ -14,12 +14,13 @@
 
 typedef struct sommet
 {
-    int num;
-    int boxexclu;
-    int* tabExclusion;
-    int nbrStep;
-    int* tabPrecedence;
-}t_sommet;
+    int num;              // identifiant du sommet
+    int nbExclu;          // nb de sommets exclus
+    int boxexclu;         // le numero du box contenant ce sommet
+    int* tabExclusion;    // tableau des noms des sommets en exclusion
+    int nbrStep;          // nombre de sommets total
+    int* tabPrecedence;   // tableau des noms des sommets précédence
+} t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER) {
     FILE *f;
@@ -43,18 +44,25 @@ int detecterNombreLignes(char* NOMFICHIER) {
 }
 
 
-t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
+t_sommet *allouerTabSommet(int nbrSommet)
+// alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
 {
     t_sommet *tabsommet;
-    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
+    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*(nbrSommet+1));
     for (int i = 0; i <= nbrSommet; i++)// initialisation pour chaque sommet
     {
-        tabsommet[i].nbrStep = nbrSommet;// initialisation ici du nombre d'etape
-        tabsommet[i].tabExclusion = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau d'exclusion pour le sommet i
-        tabsommet[i].tabExclusion[0] = 0;
-        tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
-        tabsommet[i].tabPrecedence[0]=0;
+        tabsommet[i].num = i;
         tabsommet[i].boxexclu = 0;
+        tabsommet[i].nbrStep = nbrSommet;// initialisation ici du nombre d'etape
+        tabsommet[i].tabExclusion = malloc(nbrSommet * sizeof (int ));// alloue dynamiquement un tableau d'exclusion pour le sommet i
+        for (int j = 0; j < nbrSommet; j++) {
+            tabsommet[i].tabExclusion[j] = 0;
+        }
+
+        tabsommet[i].tabPrecedence = malloc(sizeof (int ));// alloue dynamiquement un tableau dde precedence pour le sommet i
+       tabsommet[i].tabPrecedence[0]=0;
+
+
     }
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
@@ -69,17 +77,15 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
     f = fopen(NOMFICHER,"r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
-        return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
+        exit(-1) ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
 
     int nbrLigne = detecterNombreLignes(NOMFICHER);
+    printf("nombre de ligne : %d\n",nbrLigne);
+
 
     for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
     {
-        for (int j = 0; j <= tabsommet[0].nbrStep; j++)
-        {
-            tabsommet[j].num = j;
-        }
 
         fscanf(f, "%d", &temp1);// Lecture du nombre
         fscanf(f, " ");// Consomme l'espace après le nombre
@@ -88,34 +94,38 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
         while (tabsommet[temp1].tabExclusion[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
         {
             compteur++;
-            if (tabsommet[temp1].tabExclusion[compteur] == 0) {
+            if (tabsommet[temp1].tabExclusion[compteur] == 0)
+            {
                 break;
             }
         }
         tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
-        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
+        //tabsommet[temp1].tabExclusion =(int *) realloc(tabsommet[temp1].tabExclusion, (compteur + 1) * sizeof(int) );// on alloue dynamiquement une nouvelle ligne
         tabsommet[temp1].tabExclusion[compteur + 1] = 0;
 
-        printf("%d %d %d ",temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
+        printf("%d / %d %d %d ",compteur,temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
 
         compteur = 0;
-
         while (tabsommet[temp2].tabExclusion[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
         {
             compteur++;
-
             if (tabsommet[temp2].tabExclusion[compteur] == 0)
             {
                 break;
             }
         }
         tabsommet[temp2].tabExclusion[compteur] = temp1;
-        tabsommet[temp2].tabExclusion = realloc(tabsommet[temp2].tabExclusion, sizeof(int) * (compteur + 2));
+        //tabsommet[temp2].tabExclusion = (int *) realloc(tabsommet[temp2].tabExclusion, (compteur + 1) * sizeof(int));
         tabsommet[temp2].tabExclusion[compteur + 1] = 0;
-        printf("%d \n",tabsommet[temp2].tabExclusion[compteur]);
+
+        printf("%d / %d  \ttemp1 : %d\n",tabsommet[temp2].tabExclusion[compteur],compteur,temp1);
         compteur = 0;
     }
+
     fclose(f);// fermeture du fichier
+
+
+
 }
 
 int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le plus grand ombre du fichier afin de donnaitre le nombre d'étape
@@ -163,8 +173,6 @@ void BoxExclusion(t_sommet *tabsommet)
 
     nbrBox = 1;
 
-
-
     t_sommet **BOX;
 
     //printf("test\n");
@@ -190,6 +198,7 @@ void BoxExclusion(t_sommet *tabsommet)
         }
     }
 
+
     //printf("test sortie \n");
 
 
@@ -214,30 +223,29 @@ void BoxExclusion(t_sommet *tabsommet)
             {
                 for (int j = 0; j <= tailleBox[nbrBox]; j++)
                 {
-
                     compteurExclusion = 0;
-
-
                     while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
                     {
-
                         if (tabsommet[i].tabExclusion[compteurExclusion] == BOX[nbrBox][j].num)
                         {
                             condition = 1;
                             break;
                         }
+
+                        printf("comptuer exclu : %d\n",compteurExclusion);
                         compteurExclusion++;
                     }
                     if(condition)
                         break;
                 }
+                printf("test");
 
                 if (!condition)
                 {
-                    //printf("%d\n",tailleBox[nbrBox]);
+                    printf("%d\n",tailleBox[nbrBox]);
                     tabsommet[i].boxexclu = nbrBox ;
                     BOX[nbrBox][tailleBox[nbrBox]] = tabsommet[i];
-                    //printf("%d %d\n",nbrBox,tabsommet[i].num);
+                    printf("%d %d\n",nbrBox,tabsommet[i].num);
                     tailleBox[nbrBox]++;
                     BOX[nbrBox] = realloc(BOX[nbrBox],sizeof (t_sommet ) * (tailleBox[nbrBox]+2));
                     BOX[nbrBox][tailleBox[nbrBox]] = tabsommet[0];
