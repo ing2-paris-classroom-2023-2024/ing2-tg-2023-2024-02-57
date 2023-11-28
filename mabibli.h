@@ -318,54 +318,128 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     fclose(f);
 }
 void boxPrecedences(t_sommet *tabsommet) {
-    t_sommet** box;
-    int tailleBox = 0;
-    int nbrBoxs=0;
     int nbOperations = tabsommet[0].nbrStep;
-    box[0] = malloc(sizeof(t_sommet) * (tailleBox + 2));
-    if (box[0] == NULL) {
+    t_sommet** box = malloc(sizeof(t_sommet*) * 4); // Allocation de quatre pointeurs pour les boîtes
+    int* tailleBox = malloc(sizeof(int) * 4); // Allocation de quatre entiers pour les tailles de boîtes
+    for (int i = 0; i < 4; ++i) {
+        tailleBox[i] = 0;
+    }
+
+    if (box == NULL || tailleBox == NULL) {
         printf("Erreur lors de l'allocation de memoire.\n");
         return;
     }
 
-    printf("----------------------------------\n");
-    printf("_________Box 1 : ");
-    nbrBoxs++;
+    for (int i = 0; i < 4; ++i) {
+        box[i] = malloc(sizeof(t_sommet) * (nbOperations + 1)); // Allocation des boîtes
+        if (box[i] == NULL) {
+            printf("Erreur lors de l'allocation de memoire pour box[%d].\n", i);
+            for (int j = 0; j < i; ++j) {
+                free(box[j]);
+            }
+            free(box);
+            free(tailleBox);
+            return;
+        }
+    }
 
     for (int i = 0; i < nbOperations; ++i) {
         if (tabsommet[i].tabPrecedence[0] == 0) {
-            box[0][tailleBox] = tabsommet[i];
-            tailleBox++;
-            box[0] = realloc(box[0], sizeof(t_sommet) * (tailleBox + 2)); // reallocation après ajout
-            if (box[0] == NULL) {
-                printf("Erreur lors de la reallocaiton de memoire.\n");
-                return;
+            box[0][tailleBox[0]] = tabsommet[i];
+            printf("ajout box 1\n");
+            tailleBox[0]++;
+        } else {
+            int allPrecedencesFound = 1;
+            for (int compteur = 0; tabsommet[i].tabPrecedence[compteur] != 0; ++compteur) {
+                int precedencesFound = 0;
+                for (int j = 0; j < tailleBox[0]; ++j) {
+                    if (tabsommet[i].tabPrecedence[compteur] == box[0][j].num) {
+                        precedencesFound = 1;
+                        break;
+                    }
+                }
+                if (!precedencesFound) {
+                    allPrecedencesFound = 0;
+                    break;
+                }
+            }
+            if (allPrecedencesFound) {
+                box[1][tailleBox[1]] = tabsommet[i];
+                printf("ajout box 2\n");
+                tailleBox[1]++;
+            } else {
+                allPrecedencesFound = 1;
+                for (int compteur = 0; tabsommet[i].tabPrecedence[compteur] != 0; ++compteur) {
+                    int precedencesFound = 0;
+                    for (int j = 0; j < tailleBox[1]; ++j) {
+                        if (tabsommet[i].tabPrecedence[compteur] == box[1][j].num) {
+                            precedencesFound = 1;
+                            break;
+                        }
+                    }
+                    if (!precedencesFound) {
+                        allPrecedencesFound = 0;
+                        break;
+                    }
+                }
+                if (allPrecedencesFound) {
+                    box[2][tailleBox[2]] = tabsommet[i];
+                    printf("ajout box 3\n");
+                    tailleBox[2]++;
+                } else {
+                    allPrecedencesFound = 1;
+                    for (int compteur = 0; tabsommet[i].tabPrecedence[compteur] != 0; ++compteur) {
+                        int precedencesFound = 0;
+                        for (int j = 0; j < tailleBox[2]; ++j) {
+                            if (tabsommet[i].tabPrecedence[compteur] == box[2][j].num) {
+                                precedencesFound = 1;
+                                break;
+                            }
+                        }
+                        if (!precedencesFound) {
+                            allPrecedencesFound = 0;
+                            break;
+                        }
+                    }
+                    if (allPrecedencesFound) {
+                        box[3][tailleBox[3]] = tabsommet[i];
+                        printf("ajout box 4\n");
+                        tailleBox[3]++;
+                    }
+                }
             }
         }
     }
 
-    for (int i = 0; i < nbrBoxs; ++i) {
-        for (int i = 0; i < tailleBox; ++i) {
-            printf(" %d ", box[0][i].num);
+    for (int i = 0; i < 4; ++i) {
+        printf("\n_________Box %d : ", i + 1);
+        for (int j = 0; j < tailleBox[i]; ++j) {
+            printf(" %d ", box[i][j].num);
         }
     }
 
-    free(box[0]); // liberation de l'espace mémoire alloué pour box1
+    for (int i = 0; i < 4; ++i) {
+        free(box[i]); // Libération de la mémoire allouée pour les boîtes
+    }
+    free(box);
+    free(tailleBox); // Libération de la mémoire allouée pour les tableaux de tailles
 }
+
+
 
 void impressionSommetPrecedence(t_sommet *tabsommet){
     int nbOperations= tabsommet[0].nbrStep;
     int compteur = 0;
     for (int i = 1; i <= nbOperations; i++){
+        compteur=0;
         while (tabsommet[i].tabPrecedence[compteur] != 0)
         {
             printf("%d a comme antecedant %d\n",i,tabsommet[i].tabPrecedence[compteur]); ///montre les precedences de chaque tache
             compteur++;
-            if (tabsommet[i].tabPrecedence[compteur] == 0) {
+            if (tabsommet[i].tabPrecedence[compteur] == 0 ) {
                 break; // parcourt le tableau de precedence jusqua la fin
             }
         }
         printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
-        compteur=0;
     }
 }
