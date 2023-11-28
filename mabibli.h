@@ -301,6 +301,7 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier precedences.txt
     for (int i = 0; i < nbrLigne; ++i) {
         fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
+        tabsommet[i].num=i;
       //  printf("%d %d\n",temp1,temp2);
         while (tabsommet[temp2].tabPrecedence[compteur] != 0)
         {
@@ -316,19 +317,40 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     }
     fclose(f);
 }
-void boxPrecedences(t_sommet *tabsommet){
-    int* box1;
-    int tailleBox=0;
-    box1 = malloc(sizeof (int)*2);
-    box1[0]=0;
-    int condition = 0;
-    int compteur = 0;
+void boxPrecedences(t_sommet *tabsommet) {
+    t_sommet** box;
+    int tailleBox = 0;
+    int nbrBoxs=0;
+    int nbOperations = tabsommet[0].nbrStep;
+    box[0] = malloc(sizeof(t_sommet) * (tailleBox + 2));
+    if (box[0] == NULL) {
+        printf("Erreur lors de l'allocation de memoire.\n");
+        return;
+    }
+
     printf("----------------------------------\n");
     printf("_________Box 1 : ");
-    int nbOperations= tabsommet[0].nbrStep;
+    nbrBoxs++;
 
+    for (int i = 0; i < nbOperations; ++i) {
+        if (tabsommet[i].tabPrecedence[0] == 0) {
+            box[0][tailleBox] = tabsommet[i];
+            tailleBox++;
+            box[0] = realloc(box[0], sizeof(t_sommet) * (tailleBox + 2)); // reallocation après ajout
+            if (box[0] == NULL) {
+                printf("Erreur lors de la reallocaiton de memoire.\n");
+                return;
+            }
+        }
+    }
 
-    free(box1); // libere l'espace des boxs
+    for (int i = 0; i < nbrBoxs; ++i) {
+        for (int i = 0; i < tailleBox; ++i) {
+            printf(" %d ", box[0][i].num);
+        }
+    }
+
+    free(box[0]); // liberation de l'espace mémoire alloué pour box1
 }
 
 void impressionSommetPrecedence(t_sommet *tabsommet){
@@ -342,7 +364,6 @@ void impressionSommetPrecedence(t_sommet *tabsommet){
             if (tabsommet[i].tabPrecedence[compteur] == 0) {
                 break; // parcourt le tableau de precedence jusqua la fin
             }
-
         }
         printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
         compteur=0;
