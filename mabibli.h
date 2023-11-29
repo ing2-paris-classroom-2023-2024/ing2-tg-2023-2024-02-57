@@ -480,10 +480,10 @@ void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
         printf("Erreur lors de l'ouverture du fichier.\n");
         return;
     }
-    for(int i=0; i<1; i++){
+    for(int i=0; i< detecterNombreLignes(NOMFICHIER); i++){
         fscanf(f, "%d", &temp1);
-        tabsommet[0].tabTemps_cycle = temp1;
-        printf("Le temps du cycle est de %.2f secondes\n", tabsommet[0].tabTemps_cycle);
+        tabsommet[i].tabTemps_cycle = temp1;
+        printf("Le temps du cycle est de %.2f secondes\n", tabsommet[i].tabTemps_cycle);
     }
     fclose(f);
 }
