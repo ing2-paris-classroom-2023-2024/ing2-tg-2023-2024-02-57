@@ -4,6 +4,7 @@
 
 
 #include "mabibli.h"
+#include "antoine.h"
 
 int main()
 {
@@ -14,7 +15,7 @@ int main()
 
     t_sommet *tabsommet;
 
-    tabsommet = allouerTabSommet(detecterPlusGrandNombre(NOMFICHIER),NOMFICHIER);
+    tabsommet = allouerTabSommet(detecterPlusGrandNombre(NOMFICHIER));
 
     //printf("%d\n",tabsommet[0].nbrStep);
 
