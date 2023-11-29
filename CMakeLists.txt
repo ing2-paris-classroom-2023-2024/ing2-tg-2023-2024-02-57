@@ -3,4 +3,4 @@ project(ing2-tg-2023-2024-02-57)
 
 set(CMAKE_C_STANDARD 11)
 add_executable(ing2-tg-2023-2024-02-57
-        main.c)
+        main.c antoine.h mabibli.h)

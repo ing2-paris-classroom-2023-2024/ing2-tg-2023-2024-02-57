@@ -1,100 +1,10 @@
 //
-// Created by eudes on 22/11/2023.
+// Created by eudes on 29/11/2023.
 //
+#ifndef ING2_TG_2023_2024_02_57_BIBLIEEUDES_H
+#define ING2_TG_2023_2024_02_57_BIBLIEEUDES_H
 
-#ifndef ING2_TG_2023_2024_02_57_MABIBLI_H
-#define ING2_TG_2023_2024_02_57_MABIBLI_H
-
-#endif //ING2_TG_2023_2024_02_57_MABIBLI_H
-
-#include "time.h"
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
-typedef struct sommet
-{
-    int num;
-    int boxexclu;
-    int* tabExclusion;
-    int nbrStep;
-    int* tabPrecedence;
-    float tabOperationTemps;
-    float tabTemps_cycle;
-}t_sommet;
-
-int detecterNombreLignes(char* NOMFICHIER) {
-    FILE *f;
-    int nombrePresent;
-    int nombreLignes = 0;
-
-    f = fopen(NOMFICHIER, "r");
-    if (f == NULL) {
-        printf("Erreur lors de l'ouverture du fichier.\n");
-        return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
-    }
-
-    while (fscanf(f, "%d%*[^\n]", &nombrePresent) == 1) {
-        fgetc(f); // Lire et ignorer le saut de ligne
-        nombreLignes++; // Incrémente le compteur pour chaque ligne commençant par un nombre
-    }
-
-    fclose(f); // Ferme le fichier
-   // printf("Nombre de lignes %d\n", nombreLignes);
-    return nombreLignes;
-}
-
-
-
-int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le plus grand ombre du fichier afin de donnaitre le nombre d'étape
-    FILE *f;
-    int plusGrandNombre=0;
-    int nombre1, nombre2;
-    f = fopen(NOMFICHIER, "r");// ouverture du fichier
-    if (f == NULL) {
-        printf("Erreur ouverture du fichier.\n");
-        return -1; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
-    }
-    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); ++i) {// tant que le nombre de ligne du fichier n'est pas atteinte:
-        fscanf(f,"%d %d\n",&nombre1,&nombre2);// scanner les deux nombres présents sur une ligne
-        if(plusGrandNombre < nombre1){plusGrandNombre = nombre1;}// si la variable 'plusGrandNombre' est plus petite que nombre1 alors elle prend cette valeur
-        if(plusGrandNombre < nombre2){plusGrandNombre = nombre2;}// meme processus pour le nombre 2
-    }
-    fclose(f);
-    printf("le plus grand nombre est %d\n",plusGrandNombre);// affichage du plus grand nombre
-    return plusGrandNombre;// on renvoie le plus grand nombre
-}
-///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
-///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
-
-
-t_sommet *allouerTabSommet(int nbrSommet)
-// alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
-{
-    t_sommet *tabsommet;
-    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
-    for (int i = 0; i <= nbrSommet; i++)// initialisation pour chaque sommet
-    {
-        tabsommet[i].num = i;
-        tabsommet[i].boxexclu = 0;
-        tabsommet[i].nbrStep = nbrSommet;// initialisation ici du nombre d'etape
-        tabsommet[i].tabExclusion = malloc(nbrSommet * sizeof (int ));// alloue dynamiquement un tableau d'exclusion pour le sommet i
-        for (int j = 0; j < nbrSommet; j++) {
-            tabsommet[i].tabExclusion[j] = 0;
-        }
-
-        tabsommet[i].tabPrecedence = malloc(sizeof (int ));// alloue dynamiquement un tableau dde precedence pour le sommet i
-        tabsommet[i].tabPrecedence[0]=0;
-        tabsommet[i].boxexclu = 0;
-       // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
-       // tabsommet[i].tabOperationTemps[0]=0;
-    }
-
-    return tabsommet;// renvoie l'initialisation de chaque sommet
-
-}
-
-
+#endif //ING2_TG_2023_2024_02_57_BIBLIEEUDES_H
 
 void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cree un tableau de precedence pour chaque sommet
     FILE *f;
@@ -110,7 +20,7 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     for (int i = 0; i < nbrLigne; ++i) {
         fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
         tabsommet[i].num=i;
-      //  printf("%d %d\n",temp1,temp2);
+        //  printf("%d %d\n",temp1,temp2);
         while (tabsommet[temp2].tabPrecedence[compteur] != 0)
         {
             compteur++;
@@ -127,9 +37,9 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
 }
 void boxPrecedences(t_sommet *tabsommet) {
     int nbOperations = tabsommet[0].nbrStep;
-    t_sommet** box = malloc(sizeof(t_sommet*) * 4); // Allocation de quatre pointeurs pour les boîtes
-    int* tailleBox = malloc(sizeof(int) * 4); // Allocation de quatre entiers pour les tailles de boîtes
-    for (int i = 0; i < 4; ++i) {
+    t_sommet** box = malloc(sizeof(t_sommet*) * 10); // Allocation de 10 pointeurs pour les boîtes
+    int* tailleBox = malloc(sizeof(int) * 10); // Allocation de 10 entiers pour les tailles de boîtes
+    for (int i = 0; i < 10; ++i) {
         tailleBox[i] = 0;
     }
 
@@ -138,7 +48,7 @@ void boxPrecedences(t_sommet *tabsommet) {
         return;
     }
 
-    for (int i = 0; i < 4; ++i) {
+    for (int i = 0; i < 10; ++i) {
         box[i] = malloc(sizeof(t_sommet) * (nbOperations + 1)); // Allocation des boîtes
         if (box[i] == NULL) {
             printf("Erreur lors de l'allocation de memoire pour box[%d].\n", i);
@@ -150,8 +60,12 @@ void boxPrecedences(t_sommet *tabsommet) {
             return;
         }
     }
-
     for (int i = 0; i < nbOperations; ++i) {
+        for (int precedenceATROUVER = 0; tabsommet[i].tabPrecedence[precedenceATROUVER] != 0; ++precedenceATROUVER) {
+            printf("nombre preceddence a trouver%d\n",);
+        }
+    }
+ /*   for (int i = 0; i < nbOperations; ++i) {
         if (tabsommet[i].tabPrecedence[0] == 0) {
             box[0][tailleBox[0]] = tabsommet[i];
             printf("ajout box 1\n");
@@ -218,7 +132,7 @@ void boxPrecedences(t_sommet *tabsommet) {
             }
         }
     }
-
+*/
     for (int i = 0; i < 4; ++i) {
         printf("\n_________Box %d : ", i + 1);
         for (int j = 0; j < tailleBox[i]; ++j) {
@@ -250,44 +164,4 @@ void impressionSommetPrecedence(t_sommet *tabsommet){
         }
         printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
     }
-}
-void operation(char *NOMFICHIER,t_sommet *tabsommet){
-    FILE *f;
-    int temp1;
-    float temp2;
-    int temp3;
-    int compteur = 0;
-    f = fopen(NOMFICHIER,"r");
-    if (f == NULL) {
-        printf("Erreur lors de l'ouverture du fichier.\n");
-        return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
-    }
-    int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier operation.txt
-    for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
-    {
-        fscanf(f, "%d", &temp1);// Lecture du nombre
-        fscanf(f, " ");// Consomme l'espace après le nombre
-        fscanf(f, "%f", &temp2); // Lis l'autre nombre
-        fscanf(f, "\n");// Passe à la ligne suivante
-        tabsommet[temp1].tabOperationTemps = temp2;
-        printf("%d %.2f \n",temp1,tabsommet[temp1].tabOperationTemps);
-        compteur = 0;
-    }
-    fclose(f);// fermeture du fichier
-}
-
-void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
-    FILE *f;
-    int temp1;
-    f = fopen(NOMFICHIER, "r");
-    if(f==NULL){
-        printf("Erreur lors de l'ouverture du fichier.\n");
-        return;
-    }
-    for(int i=0; i< detecterNombreLignes(NOMFICHIER); i++){
-        fscanf(f, "%d", &temp1);
-        tabsommet[i].tabTemps_cycle = temp1;
-        printf("Le temps du cycle est de %.2f secondes\n", tabsommet[i].tabTemps_cycle);
-    }
-    fclose(f);
 }
