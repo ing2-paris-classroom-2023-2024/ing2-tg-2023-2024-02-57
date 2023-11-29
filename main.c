@@ -11,12 +11,10 @@ int main()
 {
     char NOMFICHIER[32];
     strcpy(NOMFICHIER,"../exclusion.txt");
-    printf("hello ECE %d\n",detecterNombreLignes(NOMFICHIER));
-    detecterPlusGrandNombre(NOMFICHIER);
 
     t_sommet *tabsommet;
 
-    tabsommet = allouerTabSommet(detecterPlusGrandNombre(NOMFICHIER));
+    tabsommet = allouerTabSommet(NOMFICHIER);
 
     //printf("%d\n",tabsommet[0].nbrStep);
 
