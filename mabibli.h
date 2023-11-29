@@ -19,8 +19,8 @@ typedef struct sommet
     int* tabExclusion;
     int nbrStep;
     int* tabPrecedence;
-    int* tabOperation;
-    float* tabOperation1;
+    float tabOperation;
+    float tabOperationTemps;
     int* tabTemps_cycle;
 }t_sommet;
 
@@ -58,12 +58,10 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
         tabsommet[i].boxexclu = 0;
-        tabsommet[i].tabOperation = malloc(sizeof (int) *2);
-        tabsommet[i].tabOperation[0]=0;
-        tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2);
+        tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2); /// delete le tableau
         tabsommet[i].tabTemps_cycle[0]=0;
-        tabsommet[i].tabOperation1 = malloc(sizeof (float )* 2);
-        tabsommet[i].tabOperation1[0]=0;
+       // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
+       // tabsommet[i].tabOperationTemps[0]=0;
     }
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
@@ -470,30 +468,8 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
         fscanf(f, " ");// Consomme l'espace après le nombre
         fscanf(f, "%f", &temp2); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
-        while (tabsommet[temp1].tabOperation[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
-        {
-            compteur++;
-            if (tabsommet[temp1].tabOperation[compteur] == 0) {
-                break;
-            }
-        }
-        tabsommet[temp1].tabOperation1[compteur] = temp2;// on associe les valeurs exclues
-        tabsommet[temp1].tabOperation1 = realloc(tabsommet[temp1].tabOperation1, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
-        tabsommet[temp1].tabOperation1[compteur + 1] = 0;
-        printf("%d %.2f %.2f",temp1,temp2,tabsommet[temp1].tabOperation1[compteur]);
-        compteur = 0;
-        while (tabsommet[(int)temp2].tabOperation[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
-        {
-            compteur++;
-            if (tabsommet[(int)temp2].tabOperation[compteur] == 0)
-            {
-                break;
-            }
-        }
-        tabsommet[(int)temp2].tabOperation[compteur] = temp1;
-        tabsommet[(int)temp2].tabOperation= realloc(tabsommet[(int)temp2].tabOperation, sizeof(int) * (compteur + 2));
-        tabsommet[(int)temp2].tabOperation[compteur + 1] = 0;
-        printf("%d\n",tabsommet[(int)temp2].tabOperation[compteur]);
+        tabsommet[temp1].tabOperationTemps = temp2;
+        printf("%d %.2f \n",temp1,tabsommet[temp1].tabOperationTemps);
         compteur = 0;
     }
     fclose(f);// fermeture du fichier
