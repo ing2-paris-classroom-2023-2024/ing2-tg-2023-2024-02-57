@@ -7,9 +7,20 @@
 
 #endif //ING2_TG_2023_2024_02_57_ANTOINE_H
 
-#include "mabibli.h"
 
 
+///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
+int sommetsAttrib(t_sommet* tabsommet)
+{
+    for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+    {
+        if(!tabsommet[i].boxexclu)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 {
