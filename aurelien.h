@@ -71,6 +71,19 @@ void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
 }
 
 
-float calcule_temps_boites(){
-
+float calcule_temps_tabsommet(int nbrStationParBoxe, t_sommet *tabsommet)
+{
+    float totale = 0;
+    int compteur = 1;
+    for(int i=0; i < nbrStationParBoxe; i++){
+        if(tabsommet[compteur].tabOperationTemps== 0){
+            do{
+                totale = totale;
+                compteur++;
+            }while(tabsommet[compteur].tabOperationTemps==0);
+        }
+        totale = totale + tabsommet[compteur].tabOperationTemps;
+        printf("%.2f\n", totale);
+        compteur++;
+    }
 }
