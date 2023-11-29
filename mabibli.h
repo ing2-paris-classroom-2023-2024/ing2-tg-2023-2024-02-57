@@ -50,7 +50,7 @@ t_sommet *allouerTabSommet(int nbrSommet)
 // alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
 {
     t_sommet *tabsommet;
-    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*(nbrSommet+1));
+    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
     for (int i = 0; i <= nbrSommet; i++)// initialisation pour chaque sommet
     {
         tabsommet[i].num = i;
@@ -91,6 +91,10 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 
     for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
     {
+        for (int j = 0; j <= tabsommet[0].nbrStep; j++)
+        {
+            tabsommet[j].num = j;
+        }
 
         fscanf(f, "%d", &temp1);// Lecture du nombre
         fscanf(f, " ");// Consomme l'espace après le nombre
@@ -105,15 +109,17 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
             }
         }
         tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
-        //tabsommet[temp1].tabExclusion =(int *) realloc(tabsommet[temp1].tabExclusion, (compteur + 1) * sizeof(int) );// on alloue dynamiquement une nouvelle ligne
+        tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
         tabsommet[temp1].tabExclusion[compteur + 1] = 0;
 
-        printf("%d / %d %d %d ",compteur,temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
+        printf("%d %d %d ",temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
 
         compteur = 0;
+
         while (tabsommet[temp2].tabExclusion[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
         {
             compteur++;
+
             if (tabsommet[temp2].tabExclusion[compteur] == 0)
             {
                 break;
@@ -205,7 +211,6 @@ void BoxExclusion(t_sommet *tabsommet)
         }
     }
 
-
     //printf("test sortie \n");
 
 
@@ -217,7 +222,7 @@ void BoxExclusion(t_sommet *tabsommet)
     //box1[0] = 0;
     int condition = 0;
 
-    //// RÉPARTITION DES SOMMETS DANS LES BOX  ////
+                        //// RÉPARTITION DES SOMMETS DANS LES BOX  ////
 
     do {
         for (int i = 1; i <= tabsommet[0].nbrStep; i++)
@@ -230,26 +235,27 @@ void BoxExclusion(t_sommet *tabsommet)
             {
                 for (int j = 0; j <= tailleBox[nbrBox]; j++)
                 {
+
                     compteurExclusion = 0;
+
+
                     while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
                     {
+
                         if (tabsommet[i].tabExclusion[compteurExclusion] == BOX[nbrBox][j].num)
                         {
                             condition = 1;
                             break;
                         }
-
-                        printf("comptuer exclu : %d\n",compteurExclusion);
                         compteurExclusion++;
                     }
                     if(condition)
                         break;
                 }
-                printf("test");
 
                 if (!condition)
                 {
-                    printf("%d\n",tailleBox[nbrBox]);
+                    //printf("%d\n",tailleBox[nbrBox]);
                     tabsommet[i].boxexclu = nbrBox ;
                     BOX[nbrBox][tailleBox[nbrBox]] = tabsommet[i];
                     //printf("%d %d\n",nbrBox,tabsommet[i].num);
@@ -276,7 +282,7 @@ void BoxExclusion(t_sommet *tabsommet)
     //printf("nombre box : %d\n",nbrBox);
 
 
-    ///                     AFFICHAGE DES BOX                                  ////
+                                        ///                     AFFICHAGE DES BOX                                  ////
 
     for (int compteur = 1; compteur <=nbrBox ; compteur++)
     {
@@ -316,7 +322,8 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier precedences.txt
     for (int i = 0; i < nbrLigne; ++i) {
         fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
-        //  printf("%d %d\n",temp1,temp2);
+        tabsommet[i].num=i;
+      //  printf("%d %d\n",temp1,temp2);
         while (tabsommet[temp2].tabPrecedence[compteur] != 0)
         {
             compteur++;
@@ -475,30 +482,8 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
         fscanf(f, " ");// Consomme l'espace après le nombre
         fscanf(f, "%f", &temp2); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
-        while (tabsommet[temp1].tabOperation[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
-        {
-            compteur++;
-            if (tabsommet[temp1].tabOperation[compteur] == 0) {
-                break;
-            }
-        }
-        tabsommet[temp1].tabOperation1[compteur] = temp2;// on associe les valeurs exclues
-        tabsommet[temp1].tabOperation1 = realloc(tabsommet[temp1].tabOperation1, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
-        tabsommet[temp1].tabOperation1[compteur + 1] = 0;
-        printf("%d %.2f %.2f",temp1,temp2,tabsommet[temp1].tabOperation1[compteur]);
-        compteur = 0;
-        while (tabsommet[(int)temp2].tabOperation[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
-        {
-            compteur++;
-            if (tabsommet[(int)temp2].tabOperation[compteur] == 0)
-            {
-                break;
-            }
-        }
-        tabsommet[(int)temp2].tabOperation[compteur] = temp1;
-        tabsommet[(int)temp2].tabOperation= realloc(tabsommet[(int)temp2].tabOperation, sizeof(int) * (compteur + 2));
-        tabsommet[(int)temp2].tabOperation[compteur + 1] = 0;
-        printf("%d\n",tabsommet[(int)temp2].tabOperation[compteur]);
+        tabsommet[temp1].tabOperationTemps = temp2;
+        printf("%d %.2f \n",temp1,tabsommet[temp1].tabOperationTemps);
         compteur = 0;
     }
     fclose(f);// fermeture du fichier
