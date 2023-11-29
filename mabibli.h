@@ -67,8 +67,10 @@ int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le p
 ///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
 ///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
 
+void operation(char *NOMFICHIER,t_sommet *tabsommet);
+float calcule_temps_tabsommet(t_sommet *tabsommet);
 
-t_sommet *allouerTabSommet(char *NOMFICHIER)
+t_sommet *allouerTabSommet(char *NOMFICHIER,char *NOMTEMP)
 {
     t_sommet *tabsommet;
     int test1,test2;
@@ -145,6 +147,9 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
         tabsommet[i].boxexclu = 0;
         // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
         // tabsommet[i].tabOperationTemps[0]=0;
+
+
+
     }
 
 ///une fois qu'on a tous les sommets on cherche donc a le re classer dans l'ordre
@@ -171,10 +176,10 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
     {
         printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
     }
-
     /// trie validé
+    operation(NOMTEMP, tabsommet);
 
-    return tabsommet;// renvoie l'initialisation de chaque sommet
+    return tabsommet;/// renvoie l'initialisation de chaque sommet
 
 
 

@@ -71,19 +71,16 @@ void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
 }
 
 
-float calcule_temps_tabsommet(int nbrStationParBoxe, t_sommet *tabsommet)
+float calcule_temps_tabsommet(t_sommet *tabsommet)
 {
-    float totale = 0;
-    int compteur = 1;
-    for(int i=0; i < nbrStationParBoxe; i++){
-        if(tabsommet[compteur].tabOperationTemps== 0){
-            do{
-                totale = totale;
-                compteur++;
-            }while(tabsommet[compteur].tabOperationTemps==0);
+    float time_to_return = 0;
+    int indice= 0;
+    do{
+        if(time_to_return < tabsommet[indice]. tabOperationTemps){
+            time_to_return = tabsommet[indice].tabOperationTemps;
         }
-        totale = totale + tabsommet[compteur].tabOperationTemps;
-        printf("%.2f\n", totale);
-        compteur++;
-    }
+        indice++;
+    }while(tabsommet[indice].num != 0);
+    return time_to_return;
 }
+
