@@ -19,9 +19,8 @@ typedef struct sommet
     int* tabExclusion;
     int nbrStep;
     int* tabPrecedence;
-    float tabOperation;
     float tabOperationTemps;
-    int* tabTemps_cycle;
+    float tabTemps_cycle;
 }t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER) {
@@ -58,10 +57,6 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
         tabsommet[i].boxexclu = 0;
-        tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2); /// delete le tableau
-        tabsommet[i].tabTemps_cycle[0]=0;
-       // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
-       // tabsommet[i].tabOperationTemps[0]=0;
     }
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
@@ -454,8 +449,6 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
     FILE *f;
     int temp1;
     float temp2;
-    int temp3;
-    int compteur = 0;
     f = fopen(NOMFICHIER,"r");
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
@@ -470,7 +463,22 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
         fscanf(f, "\n");// Passe à la ligne suivante
         tabsommet[temp1].tabOperationTemps = temp2;
         printf("%d %.2f \n",temp1,tabsommet[temp1].tabOperationTemps);
-        compteur = 0;
     }
     fclose(f);// fermeture du fichier
+}
+
+void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
+    FILE *f;
+    int temp1;
+    f = fopen(NOMFICHIER, "r");
+    if(f==NULL){
+        printf("Erreur lors de l'ouverture du fichier.\n");
+        return;
+    }
+    for(int i=0; i<1; i++){
+        fscanf(f, "%d", &temp1);
+        tabsommet[0].tabTemps_cycle = temp1;
+        printf("Le temps du cycle est de %.2f secondes\n", tabsommet[0].tabTemps_cycle);
+    }
+    fclose(f);
 }
