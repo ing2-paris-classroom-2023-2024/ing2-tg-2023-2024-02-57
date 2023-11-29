@@ -5,6 +5,7 @@
 
 #include "mabibli.h"
 #include "antoine.h"
+#include "aurelien.h"
 
 int main()
 {
@@ -28,9 +29,10 @@ int main()
     //boxPrecedences(tabsommet);
     //free(tabsommet); //libere l'espace du tableau de sommet
 
-    //strcpy(NOMFICHIER, "../operation.txt");
-    //operation(NOMFICHIER, tabsommet);
+    strcpy(NOMFICHIER, "../operation.txt");
+    operation(NOMFICHIER, tabsommet);
     //strcpy(NOMFICHIER, "../temps_de_cycle.txt");
+    //tempsCycle(NOMFICHIER, tabsommet);
 
     return 17;
 };
