@@ -60,8 +60,12 @@ void boxPrecedences(t_sommet *tabsommet) {
             return;
         }
     }
-
     for (int i = 0; i < nbOperations; ++i) {
+        for (int precedenceATROUVER = 0; tabsommet[i].tabPrecedence[precedenceATROUVER] != 0; ++precedenceATROUVER) {
+            printf("nombre preceddence a trouver%d\n",);
+        }
+    }
+ /*   for (int i = 0; i < nbOperations; ++i) {
         if (tabsommet[i].tabPrecedence[0] == 0) {
             box[0][tailleBox[0]] = tabsommet[i];
             printf("ajout box 1\n");
@@ -128,7 +132,7 @@ void boxPrecedences(t_sommet *tabsommet) {
             }
         }
     }
-
+*/
     for (int i = 0; i < 4; ++i) {
         printf("\n_________Box %d : ", i + 1);
         for (int j = 0; j < tailleBox[i]; ++j) {
