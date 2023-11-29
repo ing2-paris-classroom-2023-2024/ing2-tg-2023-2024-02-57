@@ -62,6 +62,9 @@ int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le p
     printf("le plus grand nombre est %d\n",plusGrandNombre);// affichage du plus grand nombre
     return plusGrandNombre;// on renvoie le plus grand nombre
 }
+///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
+///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
+
 
 t_sommet *allouerTabSommet(char *NOMFICHIER)
 {
@@ -70,9 +73,9 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
     int temp1,temp2;
     int plusgrandnombre = 0;
     int compteur_nombre_sommet = 0;
-    int *tabnumsommet;
+    int *tabnumsommet;      //tableau permettant de stocker les sommets
 
-    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER);
+    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER); //detecte le plus grand sommet
 
     tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre + 1 ) );
 
@@ -140,6 +143,9 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
         tabsommet[i].boxexclu = 0;
         // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
         // tabsommet[i].tabOperationTemps[0]=0;
+
+
+
     }
 
 ///une fois qu'on a tous les sommets on cherche donc a le re classer dans l'ordre
@@ -166,10 +172,9 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
     {
         printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
     }
-
     /// trie validé
 
-    return tabsommet;// renvoie l'initialisation de chaque sommet
+    return tabsommet;/// renvoie l'initialisation de chaque sommet
 
 
 
