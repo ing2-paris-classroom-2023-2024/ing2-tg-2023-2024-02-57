@@ -321,7 +321,7 @@ void boxPrecedences(t_sommet *tabsommet) {
 
 
 void impressionSommetPrecedence(t_sommet *tabsommet){
-    int nbOperations= tabsommet[0].nbrStep;
+    int nbOperations= tabsommet[0].nbrStep;   //variable permettant de compter le nb d'antécédent de chaque tache
     int compteur = 0;
     for (int i = 1; i <= nbOperations; i++){
         compteur=0;
@@ -333,6 +333,6 @@ void impressionSommetPrecedence(t_sommet *tabsommet){
                 break; // parcourt le tableau de precedence jusqua la fin
             }
         }
-        printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
+        printf("  %d a %d antecedant\n\n",i,compteur); // affiche le nombre de précédence de chaque tache
     }
 }
