@@ -68,32 +68,117 @@ int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le p
 ///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
 
 
-t_sommet *allouerTabSommet(int nbrSommet)
-// alloue dynamiquement le nombre de sommets en fonction du nombre de sommet spécifié
+t_sommet *allouerTabSommet(char *NOMFICHIER)
 {
     t_sommet *tabsommet;
-    tabsommet = (t_sommet*) malloc(sizeof(t_sommet)*nbrSommet);
-    for (int i = 0; i <= nbrSommet; i++)// initialisation pour chaque sommet
+    int test1,test2;
+    int temp1,temp2;
+    int plusgrandnombre = 0;
+    int compteur_nombre_sommet = 0;
+    int *tabnumsommet;
+
+    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER);
+
+    tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre + 1 ) );
+
+    FILE *f;
+
+    f = fopen(NOMFICHIER,"r");
+
+    if(f==NULL)
     {
-        tabsommet[i].num = i;
+        printf("erreur ouverture fichier allouer tableau sommet");
+        exit(-1);
+    }
+    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); i++)
+    {
+
+        test1 = 0;
+        test2 = 0;
+        fscanf(f,"%d %d\n",&temp1,&temp2);
+        for (int j = 0; j <= compteur_nombre_sommet; j++)
+        {
+            if (temp1 == tabnumsommet[j])
+            {
+                test1 = 1;
+            }
+            if (temp2 == tabnumsommet[j])
+            {
+                test2 = 1;
+            }
+        }
+        if(!test1)
+        {
+            printf("nouveau sommet : %d\n",temp1);
+            tabnumsommet[compteur_nombre_sommet] = temp1;
+            compteur_nombre_sommet++;
+            tabnumsommet[compteur_nombre_sommet] = 0;
+            test1 = 1;
+
+        }
+        if(!test2)
+        {
+            printf("nouveau sommet : %d\n",temp2);
+            tabnumsommet[compteur_nombre_sommet] = temp2;
+            compteur_nombre_sommet++;
+            tabnumsommet[compteur_nombre_sommet] = 0;
+            test2 = 1;
+
+        }
+    }
+    tabsommet = (t_sommet *) malloc((compteur_nombre_sommet+1)*sizeof(t_sommet));
+
+    for (int i = 0; i < compteur_nombre_sommet; i++)
+    {
+        tabsommet[i].num = tabnumsommet[i];
         tabsommet[i].boxexclu = 0;
-        tabsommet[i].nbrStep = nbrSommet;// initialisation ici du nombre d'etape
-        tabsommet[i].tabExclusion = malloc(nbrSommet * sizeof (int ));// alloue dynamiquement un tableau d'exclusion pour le sommet i
-        for (int j = 0; j < nbrSommet; j++) {
+        tabsommet[i].nbrStep = compteur_nombre_sommet;// initialisation ici du nombre d'etape
+        tabsommet[i].tabExclusion = malloc(compteur_nombre_sommet * sizeof (int ));// alloue dynamiquement un tableau d'exclusion pour le sommet i
+
+        for (int j = 0; j < compteur_nombre_sommet; j++)
+        {
             tabsommet[i].tabExclusion[j] = 0;
         }
 
         tabsommet[i].tabPrecedence = malloc(sizeof (int ));// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
         tabsommet[i].boxexclu = 0;
-       // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
-       // tabsommet[i].tabOperationTemps[0]=0;
+        // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
+        // tabsommet[i].tabOperationTemps[0]=0;
     }
+
+///une fois qu'on a tous les sommets on cherche donc a le re classer dans l'ordre
+///pour ca on fait un buffer de sommet
+
+    t_sommet buffer;
+
+    for (int i = 0; i < compteur_nombre_sommet; i++)
+    {
+        for (int j = 0; j < compteur_nombre_sommet; j++)
+        {
+            if(tabsommet[i].num < tabsommet[j].num)
+            {
+                buffer = tabsommet[i];
+                tabsommet[i] = tabsommet[j];
+                tabsommet[j] = buffer;
+
+            }
+        }
+    }
+    ///ici on fait des printf afin de verifier si les sommets sont bien trié
+    printf("nombre de sommets : %d\n",compteur_nombre_sommet);
+    for (int i = 0; i < compteur_nombre_sommet; i++)
+    {
+        printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
+    }
+
+    /// trie validé
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
 
-}
 
+
+}
 
 
 void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cree un tableau de precedence pour chaque sommet
