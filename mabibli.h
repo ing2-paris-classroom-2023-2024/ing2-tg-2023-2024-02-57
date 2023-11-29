@@ -75,9 +75,9 @@ t_sommet *allouerTabSommet(char *NOMFICHIER)
     int temp1,temp2;
     int plusgrandnombre = 0;
     int compteur_nombre_sommet = 0;
-    int *tabnumsommet;
+    int *tabnumsommet;      //tableau permettant de stocker les sommets
 
-    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER);
+    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER); //detecte le plus grand sommet
 
     tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre + 1 ) );
 
