@@ -15,6 +15,7 @@
 typedef struct sommet
 {
     int num;
+    int boxexclu;
     int* tabExclusion;
     int nbrStep;
     int* tabPrecedence;
@@ -53,6 +54,7 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabExclusion[0] = 0;
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
+        tabsommet[i].boxexclu = 0;
     }
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
@@ -74,6 +76,10 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 
     for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
     {
+        for (int j = 0; j <= tabsommet[0].nbrStep; j++)
+        {
+            tabsommet[j].num = j;
+        }
 
         fscanf(f, "%d", &temp1);// Lecture du nombre
         fscanf(f, " ");// Consomme l'espace après le nombre
@@ -85,7 +91,6 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
             if (tabsommet[temp1].tabExclusion[compteur] == 0) {
                 break;
             }
-
         }
         tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
         tabsommet[temp1].tabExclusion = realloc(tabsommet[temp1].tabExclusion, sizeof(int) * (compteur + 2));// on alloue dynamiquement une nouvelle ligne
@@ -131,47 +136,156 @@ int detecterPlusGrandNombre(char *NOMFICHIER){// le but ici est de detecter le p
     printf("le plus grand nombre est %d\n",plusGrandNombre);// affichage du plus grand nombre
     return plusGrandNombre;// on renvoie le plus grand nombre
 }
+///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
+
+
+int sommetsAttrib(t_sommet* tabsommet)
+{
+    for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+    {
+        if(!tabsommet[i].boxexclu)
+        {
+            return 1;
+        }
+    }
+    return 0;
+}
 
 void BoxExclusion(t_sommet *tabsommet)
 {
-    int *box1;
-    int tailleBox = 0;
-    box1 = malloc(sizeof (int)*2);
-    int compteurExclusion;
-    box1[0] = 0;
-    int condition = 0;
-    printf("----------------------------------\n");
-    printf("_________Box 1 : ");
-    for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+    int *tailleBox;
+
+    int nbrBox = 0;
+
+    tailleBox = malloc(sizeof (int )*(nbrBox+2));
+
+    tailleBox[0] = 0;
+
+    nbrBox = 1;
+
+
+
+    t_sommet **BOX;
+
+    //printf("test\n");
+
+
+    BOX = malloc(sizeof (t_sommet*) * 2);
+
+    //printf("test\n");
+
+
+
+    for (int i = 0; i < 2; i++)
     {
-        condition = 0;
+        BOX[i] = malloc(sizeof (t_sommet) * 2);
+        BOX[i][0] = tabsommet[0];
+        //printf("test\n");
 
-        for (int j = 0; j <= tailleBox; j++)
+        if (!BOX[i])
         {
-            compteurExclusion = 0;
-
-
-            while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
-            {
-                if (tabsommet[i].tabExclusion[compteurExclusion] == box1[j])
-                {
-                    condition = 1;
-                }
-                compteurExclusion++;
-            }
-        }
-        if (!condition)
-        {
-
-            box1[tailleBox] = i;
-            printf(" %d ",box1[tailleBox]);
-            tailleBox++;
-            box1 = realloc(box1,sizeof (int )* (tailleBox+2));
-            box1[tailleBox] = 0;
+            //printf("test box \n");
+            printf("erreur allocation BOX %d",i);
+            return;
         }
     }
-    printf("__________\n");
-    free(box1);
+
+    //printf("test sortie \n");
+
+
+
+    //box1 = malloc(sizeof (int)*2);
+
+    //printf("teSSTT\n");
+    int compteurExclusion;
+    //box1[0] = 0;
+    int condition = 0;
+
+                        //// RÉPARTITION DES SOMMETS DANS LES BOX  ////
+
+    do {
+        for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+        {
+
+            condition = 0;
+            //printf("test %d\n",tabsommet[i].boxexclu);
+
+            if(tabsommet[i].boxexclu == 0)
+            {
+                for (int j = 0; j <= tailleBox[nbrBox]; j++)
+                {
+
+                    compteurExclusion = 0;
+
+
+                    while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
+                    {
+
+                        if (tabsommet[i].tabExclusion[compteurExclusion] == BOX[nbrBox][j].num)
+                        {
+                            condition = 1;
+                            break;
+                        }
+                        compteurExclusion++;
+                    }
+                    if(condition)
+                        break;
+                }
+
+                if (!condition)
+                {
+                    //printf("%d\n",tailleBox[nbrBox]);
+                    tabsommet[i].boxexclu = nbrBox ;
+                    BOX[nbrBox][tailleBox[nbrBox]] = tabsommet[i];
+                    //printf("%d %d\n",nbrBox,tabsommet[i].num);
+                    tailleBox[nbrBox]++;
+                    BOX[nbrBox] = realloc(BOX[nbrBox],sizeof (t_sommet ) * (tailleBox[nbrBox]+2));
+                    BOX[nbrBox][tailleBox[nbrBox]] = tabsommet[0];
+                }
+            }
+        }
+        if(sommetsAttrib(tabsommet))
+        {
+            //printf("taille box %d %d\n",nbrBox,tailleBox[nbrBox]);
+            nbrBox++;
+            tailleBox = realloc(tailleBox,sizeof (int)*(nbrBox+2));
+            tailleBox[nbrBox] = 0;
+            BOX = realloc(BOX,sizeof (t_sommet*) *(nbrBox+2));
+            BOX[nbrBox] = malloc(sizeof (t_sommet)*(tailleBox[nbrBox]+2));
+            //printf("test %d %d \n",tailleBox[nbrBox-1],tailleBox[nbrBox]);
+        }
+        //printf("taille box %d %d\n",nbrBox,tailleBox[nbrBox]);
+
+    } while (sommetsAttrib(tabsommet));
+
+    //printf("nombre box : %d\n",nbrBox);
+
+
+                                        ///                     AFFICHAGE DES BOX                                  ////
+
+    for (int compteur = 1; compteur <=nbrBox ; compteur++)
+    {
+        //printf("taille box %d : %d\n",compteur,tailleBox[compteur]);
+        for (int i = 0; i <= tailleBox[compteur]; i++)
+        {
+            printf("----");
+        }
+        printf("------------------------\n");
+
+        printf("Box %d :\t\t ",compteur);
+
+        for (int i = 0; i < tailleBox[compteur] ; i++)
+        {
+            printf(" %d ",BOX[compteur][i].num);
+        }
+
+        printf("\n");
+
+    }
+
+
+
+    free(BOX);
 }
 
 void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cree un tableau de precedence pour chaque sommet
