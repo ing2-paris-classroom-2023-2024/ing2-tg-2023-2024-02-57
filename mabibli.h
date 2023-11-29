@@ -19,9 +19,9 @@ typedef struct sommet
     int* tabExclusion;
     int nbrStep;
     int* tabPrecedence;
-    /*int* tabOperation;
+    int* tabOperation;
     float* tabOperation1;
-    int* tabTemps_cycle;*/
+    int* tabTemps_cycle;
 }t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER) {
@@ -58,12 +58,12 @@ t_sommet *allouerTabSommet(int nbrSommet,char *NOMFICHIER)// alloue dynamiquemen
         tabsommet[i].tabPrecedence = malloc(sizeof (int ) * 2);// alloue dynamiquement un tableau dde precedence pour le sommet i
         tabsommet[i].tabPrecedence[0]=0;
         tabsommet[i].boxexclu = 0;
-        /*tabsommet[i].tabOperation = malloc(sizeof (int) *2);
+        tabsommet[i].tabOperation = malloc(sizeof (int) *2);
         tabsommet[i].tabOperation[0]=0;
         tabsommet[i].tabTemps_cycle = malloc(sizeof (int)*2);
         tabsommet[i].tabTemps_cycle[0]=0;
         tabsommet[i].tabOperation1 = malloc(sizeof (float )* 2);
-        tabsommet[i].tabOperation1[0]=0;*/
+        tabsommet[i].tabOperation1[0]=0;
     }
 
     return tabsommet;// renvoie l'initialisation de chaque sommet
@@ -452,7 +452,7 @@ void impressionSommetPrecedence(t_sommet *tabsommet){
         printf("  %d a %d antecedant\n\n",i,compteur); /// montre combien de precedence a cette tache
     }
 }
-/*void operation(char *NOMFICHIER,t_sommet *tabsommet){
+void operation(char *NOMFICHIER,t_sommet *tabsommet){
     FILE *f;
     int temp1;
     float temp2;
@@ -497,4 +497,4 @@ void impressionSommetPrecedence(t_sommet *tabsommet){
         compteur = 0;
     }
     fclose(f);// fermeture du fichier
-}*/
+}
