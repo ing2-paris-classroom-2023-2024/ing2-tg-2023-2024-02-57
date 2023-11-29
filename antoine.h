@@ -26,6 +26,7 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 {
     FILE *f;
     int temp1,temp2;
+    int indice1,indice2;
     int compteur = 0;
     f = fopen(NOMFICHER,"r");
     if (f == NULL) {
@@ -39,39 +40,47 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet)
 
     for (int i = 0; i < nbrLigne ; i++)// pour chaque ligne du fichier on a:
     {
-
+        indice1 = 0;
+        indice2 = 0;
         fscanf(f, "%d", &temp1);// Lecture du nombre
         fscanf(f, " ");// Consomme l'espace après le nombre
         fscanf(f, "%d", &temp2); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
-        while (tabsommet[temp1].tabExclusion[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
+        for (int j = 0; j < tabsommet[0].nbrStep; j++)
+        {
+            if (tabsommet[j].num == temp1)
+                indice1 = j;
+            if (tabsommet[j].num == temp2)
+                indice2 = j;
+        }
+        while (tabsommet[indice1].tabExclusion[compteur] != 0) // on lit les lignes du tableau jusqu'à celle correspondant à la valeur que l'on veut exclure
         {
             compteur++;
-            if (tabsommet[temp1].tabExclusion[compteur] == 0)
+            if (tabsommet[indice1].tabExclusion[compteur] == 0)
             {
                 break;
             }
         }
-        tabsommet[temp1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
+        tabsommet[indice1].tabExclusion[compteur] = temp2;// on associe les valeurs exclues
         //tabsommet[temp1].tabExclusion =(int *) realloc(tabsommet[temp1].tabExclusion, (compteur + 1) * sizeof(int) );// on alloue dynamiquement une nouvelle ligne
-        tabsommet[temp1].tabExclusion[compteur + 1] = 0;
+        tabsommet[indice1].tabExclusion[compteur + 1] = 0;
 
-        printf("%d / %d %d %d ",compteur,temp1,temp2,tabsommet[temp1].tabExclusion[compteur]);
+        printf("%d / %d %d %d ",compteur,temp1,temp2,tabsommet[indice1].tabExclusion[compteur]);
 
         compteur = 0;
-        while (tabsommet[temp2].tabExclusion[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
+        while (tabsommet[indice2].tabExclusion[compteur] != 0)// on recommence le processus précédent dans l'autre sens, en effet l'exclusion se fait dans les deux sens
         {
             compteur++;
-            if (tabsommet[temp2].tabExclusion[compteur] == 0)
+            if (tabsommet[indice2].tabExclusion[compteur] == 0)
             {
                 break;
             }
         }
-        tabsommet[temp2].tabExclusion[compteur] = temp1;
+        tabsommet[indice2].tabExclusion[compteur] = temp1;
         //tabsommet[temp2].tabExclusion = (int *) realloc(tabsommet[temp2].tabExclusion, (compteur + 1) * sizeof(int));
-        tabsommet[temp2].tabExclusion[compteur + 1] = 0;
+        tabsommet[indice2].tabExclusion[compteur + 1] = 0;
 
-        printf("%d / %d  \ttemp1 : %d\n",tabsommet[temp2].tabExclusion[compteur],compteur,temp1);
+        printf("%d / %d  \ttemp1 : %d\n",tabsommet[indice2].tabExclusion[compteur],compteur,temp1);
         compteur = 0;
     }
 
@@ -85,13 +94,14 @@ void BoxExclusion(t_sommet *tabsommet)
 {
     int *tailleBox;
 
-    int nbrBox = 0;
+    int nbrBox = 1;
 
-    tailleBox = malloc(sizeof (int )*(nbrBox+2));
+    tailleBox = malloc(sizeof (int )*(nbrBox));
+
+    nbrBox = 0;
 
     tailleBox[0] = 0;
 
-    nbrBox = 1;
 
 
 
@@ -135,11 +145,10 @@ void BoxExclusion(t_sommet *tabsommet)
     //// RÉPARTITION DES SOMMETS DANS LES BOX  ////
 
     do {
-        for (int i = 1; i <= tabsommet[0].nbrStep; i++)
+        for (int i = 0; i <= tabsommet[0].nbrStep; i++)
         {
 
             condition = 0;
-            //printf("test %d\n",tabsommet[i].boxexclu);
 
             if(tabsommet[i].boxexclu == 0)
             {
@@ -153,14 +162,13 @@ void BoxExclusion(t_sommet *tabsommet)
                             condition = 1;
                             break;
                         }
-
-                        printf("comptuer exclu : %d\n",compteurExclusion);
+                        printf(" i : %d , condition %d , BOX[nbrBox][J].num %d \n",i,condition,BOX[nbrBox][j].num);
                         compteurExclusion++;
                     }
                     if(condition)
                         break;
                 }
-                printf("test");
+                //printf("test");
 
                 if (!condition)
                 {
