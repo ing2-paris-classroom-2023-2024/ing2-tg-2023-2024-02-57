@@ -4,17 +4,17 @@
 
 
 #include "mabibli.h"
-#include "antoine.h"
-#include "aurelien.h"
 
 int main()
 {
     char NOMFICHIER[32];
     strcpy(NOMFICHIER,"../exclusion.txt");
+    char FILENAME[32];
+    strcpy(FILENAME,"../operation.txt");
 
     t_sommet *tabsommet;
 
-    tabsommet = allouerTabSommet(NOMFICHIER);
+    tabsommet = allouerTabSommet(NOMFICHIER,FILENAME);
 
     //printf("%d\n",tabsommet[0].nbrStep);
 
