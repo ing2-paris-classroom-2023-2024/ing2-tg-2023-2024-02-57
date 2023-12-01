@@ -19,8 +19,7 @@ int main()
     tabsommet = allouerTabSommet(NAMEFILE,FILENAME,NOMFICHIER);
 
     //printf("%d\n",tabsommet[0].nbrStep);
-
-    exclusion(NOMFICHIER,tabsommet);
+    BoxExclusion(tabsommet);
     printf("testaamen");
     precedences(NAMEFILE,tabsommet);
     printf("test");

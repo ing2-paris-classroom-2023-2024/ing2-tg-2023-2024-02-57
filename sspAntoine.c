@@ -14,8 +14,6 @@ int renvoie_sommet(int num, t_sommet *tabsommet)
     }
 }
 
-
-
 ///fonction qui renvoie 1 tant que tous les sommets du tableau n'ont pas une box assigné
 int sommetsAttrib(t_sommet* tabsommet)
 {
@@ -125,7 +123,7 @@ void BoxExclusion(t_sommet *tabsommet)
     //// RÉPARTITION DES SOMMETS DANS LES BOX  ////
 
     do {
-        for (int i = 1; i < tabsommet[0].nbrStep; i++)
+        for (int i = 0; i < tabsommet[0].nbrStep; i++)
         {
 
             condition = 0;
@@ -196,15 +194,13 @@ void BoxExclusion(t_sommet *tabsommet)
 
         for (int i = 0; i < tailleBox[compteur] ; i++)
         {
-            printf(" %d ",BOX[compteur][i].num);
+            printf(" %d (%.2f)",BOX[compteur][i].num,BOX[compteur][i].tabOperationTemps);
         }
 
         printf("\n");
 
     }
-
-
-
+    calcule_temps_tabsommet(BOX,nbrBox,tailleBox);
     free(BOX);
 }
 
@@ -295,6 +291,7 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
     }
 
 
+
 ///une fois qu'on a tous les sommets on cherche donc a le re classer dans l'ordre
 ///pour ca on fait un buffer de sommet
 
@@ -325,13 +322,14 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
 
     ///on associe maintenant a chaque étape un temps
 
-    operation(FILENAME,tabsommet);
 
     exclusion(EXCLUSION,tabsommet);
+    operation(FILENAME,tabsommet);
 
 
-    return tabsommet;/// renvoie l'initialisation de chaque sommet
 
+    return tabsommet;
+    /// renvoie l'initialisation de chaque sommet
 }
 ///fonction qui renvoie 0 si tous les sommets ne sont pas attribuer a un box
 ///1 si tous les sommets sont placées dans un box
@@ -363,7 +361,7 @@ void trieBOXtot(t_sommet *tabsommet)
     int nbrPrecedences;
     int compteur_precedences;
     do {
-        for (int i = 0; i < tabsommet[0].nbrStep; i++)
+        for (int i = 0 ; i < tabsommet[0].nbrStep; i++)
         {
             ///on commence par reegarder si le sommet a des précédances
             compteur_precedences = 0;

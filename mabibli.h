@@ -32,10 +32,9 @@ void exclusion(char* NOMFICHER,t_sommet* tabsommet);
 void BoxExclusion(t_sommet *tabsommet);
 void operation(char *NOMFICHIER,t_sommet *tabsommet);
 void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet);
-float calcule_temps_tabsommet(t_sommet *tabsommet);
 void boxPrecedences(t_sommet *tabsommet);
 void precedences(char *NOMFICHIER,t_sommet *tabsommet);
 void impressionSommetPrecedence(t_sommet *tabsommet);
 int detecterPlusGrandNombre(char *NOMFICHIER);
 void trieBOXtot(t_sommet *tabsommet);
-
+void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox);

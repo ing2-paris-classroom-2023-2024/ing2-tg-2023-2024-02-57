@@ -8,8 +8,7 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
     FILE *f;
     int numSommet;
     float temps;
-    float totale;
-    int compteur=1;
+    int compteur=0;
     f = fopen(NOMFICHIER,"r");
 
     if (f == NULL)
@@ -26,28 +25,11 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
         fscanf(f, " ");// Consume l'espace après le nombre
         fscanf(f, "%f", &temps); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
-        if(numSommet != compteur){
-            do{
-                tabsommet[compteur].tabOperationTemps = 0;
-                compteur++;
-            }while(numSommet != compteur);
-        }
         tabsommet[compteur].tabOperationTemps = temps;
         printf("%d %.2f \n", numSommet, tabsommet[compteur].tabOperationTemps);
         compteur++;
     }
     fclose(f);// fermeture du fichier
-    compteur=1;
-    for(int i=0; i < nbrLigne; i++){
-        if(tabsommet[compteur].tabOperationTemps== 0){
-            do{
-                compteur++;
-            }while(tabsommet[compteur].tabOperationTemps==0);
-        }
-        totale = totale + tabsommet[compteur].tabOperationTemps;
-        printf("%.2f\n", totale);
-        compteur++;
-    }
 }
 
 void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
@@ -67,16 +49,19 @@ void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
 }
 
 
-float calcule_temps_tabsommet(t_sommet *tabsommet)
+void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox)
 {
-    float time_to_return = 0;
-    int indice= 0;
-    do{
-        if(time_to_return < tabsommet[indice]. tabOperationTemps){
-            time_to_return = tabsommet[indice].tabOperationTemps;
+    float time_to_return;
+    for(int i=1; i<=nbrBox; i++){
+        time_to_return=0;
+        for(int j = 0; j < tailleBox[i]; j++)
+        {
+            if(time_to_return < box[i][j].tabOperationTemps)
+            {
+                time_to_return = box[i][j].tabOperationTemps;
+            }
         }
-        indice++;
-    }while(tabsommet[indice].num != 0);
-    return time_to_return;
+        printf("La box %d a pour temps: %.2f\n", i, time_to_return);
+    }
 }
 
