@@ -54,30 +54,43 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     int temp1,temp2;
     int compteur = 0;
     f = fopen(NOMFICHIER,"r");
+
     if (f == NULL) {
         printf("Erreur lors de l'ouverture du fichier.\n");
         return ; // Code d'erreur pour indiquer une erreur d'ouverture du fichier
     }
 
+    int indice2 = 0;
+    int indice1 = 0;
+
     int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier precedences.txt
-    for (int i = 0; i < nbrLigne; ++i) {
+    for (int i = 0; i < nbrLigne; ++i)
+    {
+
+
         fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
-        tabsommet[i].num=i;
-        //  printf("%d %d\n",temp1,temp2);
-        while (tabsommet[temp2].tabPrecedence[compteur] != 0)
+
+        indice2 = renvoie_sommet(temp2,tabsommet);
+        indice1 = renvoie_sommet(temp1,tabsommet);
+
+
+        while (tabsommet[indice2].tabPrecedence[compteur] != 0)
         {
-            compteur++;
-            if (tabsommet[temp2].tabPrecedence[compteur] == 0) { //deroule jusqu'a la fin du tableau de precedences
+            if (tabsommet[indice2].tabPrecedence[compteur] == 0)
+            { //deroule jusqu'a la fin du tableau de precedences
                 break;
             }
+            compteur++;
+
         }
-        tabsommet[temp2].tabPrecedence[compteur]=temp1; // rajoute l'element a la fin
-        tabsommet[temp2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2)); // realloue un nouvelle espace plus grand
-        tabsommet[temp2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
+        tabsommet[indice2].tabPrecedence[compteur]=temp1; // rajoute l'element a la fin
+        tabsommet[indice2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2)); // realloue un nouvelle espace plus grand
+        tabsommet[indice2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
         compteur = 0; // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
     }
     fclose(f);
 }
+
 void boxPrecedences(t_sommet *tabsommet) {
     int nbOperations = tabsommet[0].nbrStep;
     t_sommet** box = malloc(sizeof(t_sommet*) * 10); // Allocation de 10 pointeurs pour les boîtes

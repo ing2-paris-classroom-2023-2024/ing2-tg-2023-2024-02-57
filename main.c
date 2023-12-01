@@ -7,6 +7,8 @@
 
 int main()
 {
+    char NAMEFILE[32];
+    strcpy(NAMEFILE,"../precedences.txt");
     char NOMFICHIER[32];
     strcpy(NOMFICHIER,"../exclusion.txt");
     char FILENAME[32];
@@ -14,13 +16,16 @@ int main()
 
     t_sommet *tabsommet;
 
-    tabsommet = allouerTabSommet(NOMFICHIER,FILENAME);
+    tabsommet = allouerTabSommet(NAMEFILE,FILENAME,NOMFICHIER);
 
     //printf("%d\n",tabsommet[0].nbrStep);
 
     exclusion(NOMFICHIER,tabsommet);
+    printf("testaamen");
+    precedences(NAMEFILE,tabsommet);
+    printf("test");
 
-    BoxExclusion(tabsommet);
+    trieBOXtot(tabsommet);
     //strcpy(NOMFICHIER,"../precedences.txt");
     //precedences(NOMFICHIER,tabsommet);
     //impressionSommetPrecedence(tabsommet);
