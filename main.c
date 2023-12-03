@@ -18,24 +18,44 @@ int main()
 
     t_sommet *tabsommet;
 
-    tabsommet = allouerTabSommet(NAMEFILE,FILENAME,NOMFICHIER);
+    tabsommet = allouerTabSommet(precedences, operation, exclusion, tempCycle);
 
-    tempsCycle(FILENAMEE,tabsommet);
+    printf("\n"
+           " __       __  ________  __    __  __    __ \n"
+           "|  \\     /  \\|        \\|  \\  |  \\|  \\  |  \\\n"
+           "| $$\\   /  $$| $$$$$$$$| $$\\ | $$| $$  | $$\n"
+           "| $$$\\ /  $$$| $$__    | $$$\\| $$| $$  | $$\n"
+           "| $$$$\\  $$$$| $$  \\   | $$$$\\ $$| $$  | $$\n"
+           "| $$\\$$ $$ $$| $$$$$   | $$\\$$ $$| $$  | $$\n"
+           "| $$ \\$$$| $$| $$_____ | $$ \\$$$$| $$__/ $$\n"
+           "| $$  \\$ | $$| $$     \\| $$  \\$$$ \\$$    $$\n"
+           " \\$$      \\$$ \\$$$$$$$$ \\$$   \\$$  \\$$$$$$ \n"
+           "                                           \n"
+           "                                           \n"
+           "                                           \n");
+    printf("----------------------------------------------------------------------------------\n");
+    do {
+        printf("|||(1) total ||| (2) exclusion ||| (3) temps ||| (4) precendences |||\n");
+        scanf("%d",&choix);
+    }while(choix != 1 && choix != 2 && choix != 3 && choix != 4);
+    printf("----------------------------------------------------------------------------------\n");
+    if(choix == 1 )
+    {
+        trieBOXtot(tabsommet);
+    }
+    if(choix == 2 )
+    {
+        BoxExclusion(tabsommet);
+    }
+    if(choix == 3 )
+    {
+        BoxExclusion(tabsommet);
+    }
+    if(choix == 4 )
+    {
+        BOXPRECEDENCES(tabsommet);
+    }
 
-    //printf("%d\n",tabsommet[0].nbrStep);
-    //BoxExclusion(tabsommet);
-    //printf("testaamen");
-    //precedences(NAMEFILE,tabsommet);
-    //printf("test\n");
-
-    trieBOXtot(tabsommet);
-    //strcpy(NOMFICHIER,"../precedences.txt");
-    //precedences(NOMFICHIER,tabsommet);
-    //impressionSommetPrecedence(tabsommet);
-    //boxPrecedences(tabsommet);
-    //free(tabsommet); //libere l'espace du tableau de sommet
-    //strcpy(NOMFICHIER, "../temps_de_cycle.txt");
-    //tempsCycle(NOMFICHIER, tabsommet);
 
     return 6969;
 };

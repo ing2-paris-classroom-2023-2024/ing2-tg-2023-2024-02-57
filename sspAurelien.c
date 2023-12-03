@@ -27,7 +27,7 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
         fscanf(f, "%f", &temps); // Lis l'autre nombre
         fscanf(f, "\n");// Passe à la ligne suivante
         tabsommet[compteur].tabOperationTemps = temps;
-        printf("%d %.2f \n", numSommet, tabsommet[compteur].tabOperationTemps);
+        //printf("%d %.2f \n", numSommet, tabsommet[compteur].tabOperationTemps);
         compteur++;
     }
     fclose(f);// fermeture du fichier
@@ -69,12 +69,12 @@ void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox, t_sommet
         printf("La box %d a pour temps: %.2f\n", i, time_to_return);
     }
     printf("Le temps totale de cycle est de: %.2f\n", addition_temps);
-    //printf("Le temps de cycle maximale etait de %.2f ", tempsCycle(NOMFICHIER, tabsommet));
-    //if(addition_temps < tempsCycle(NOMFICHIER, tabsommet)){
-    //    printf("donc le temps de cycle est finalement plus court que celui attendu\n");
-    //}
-    //else{
-    //    printf("donc le temps de cycle depasse malheureusement les attentes\n");
-    //}
+    printf("Le temps de cycle maximale etait de %.2f ", tabsommet[0].tabTemps_cycle);
+    if(addition_temps < tabsommet[0].tabTemps_cycle){
+       printf("donc le temps de cycle est finalement plus court que celui attendu\n");
+    }
+    else{
+       printf("donc le temps de cycle depasse malheureusement les attentes\n");
+    }
 }
 
