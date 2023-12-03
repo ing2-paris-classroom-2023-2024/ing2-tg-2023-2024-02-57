@@ -325,7 +325,7 @@ t_sommet *allouerTabSommet(char *PRECEDENCES, char *OPERATION, char *EXCLUSION, 
     ///on associe maintenant a chaque étape un temps
 
     precedences(PRECEDENCES, tabsommet);
-    printf("test\n");
+    //printf("test\n");
     tempsCycle(FICHIERCYCLE, tabsommet);
     exclusion(EXCLUSION,tabsommet);
     operation(OPERATION, tabsommet);
