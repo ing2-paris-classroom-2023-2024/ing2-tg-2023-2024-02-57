@@ -19,10 +19,10 @@ int main()
     tabsommet = allouerTabSommet(NAMEFILE,FILENAME,NOMFICHIER);
 
     //printf("%d\n",tabsommet[0].nbrStep);
-    BoxExclusion(tabsommet);
-    printf("testaamen");
-    precedences(NAMEFILE,tabsommet);
-    printf("test");
+    //BoxExclusion(tabsommet);
+    //printf("testaamen");
+    //precedences(NAMEFILE,tabsommet);
+    //printf("test\n");
 
     trieBOXtot(tabsommet);
     //strcpy(NOMFICHIER,"../precedences.txt");
@@ -30,11 +30,8 @@ int main()
     //impressionSommetPrecedence(tabsommet);
     //boxPrecedences(tabsommet);
     //free(tabsommet); //libere l'espace du tableau de sommet
-
-    strcpy(NOMFICHIER, "../operation.txt");
-    operation(NOMFICHIER, tabsommet);
     //strcpy(NOMFICHIER, "../temps_de_cycle.txt");
     //tempsCycle(NOMFICHIER, tabsommet);
 
-    return 17;
+    return 6969;
 };

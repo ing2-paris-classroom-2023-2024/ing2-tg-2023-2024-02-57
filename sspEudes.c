@@ -67,26 +67,28 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     for (int i = 0; i < nbrLigne; ++i)
     {
 
-
         fscanf(f,"%d %d\n",&temp1,&temp2); // lis l'element puis son predecesseur
 
-        indice2 = renvoie_sommet(temp2,tabsommet);
-        indice1 = renvoie_sommet(temp1,tabsommet);
 
+
+        indice2 = renvoie_sommet(temp2,tabsommet);
+        //indice1 = renvoie_sommet(temp1,tabsommet);
+
+        printf("test %d %d %d %d %d\n",i,temp2,indice2,temp1,tabsommet[indice2].tabPrecedence[0]);
+
+        compteur = 0;
 
         while (tabsommet[indice2].tabPrecedence[compteur] != 0)
         {
-            if (tabsommet[indice2].tabPrecedence[compteur] == 0)
-            { //deroule jusqu'a la fin du tableau de precedences
-                break;
-            }
-            compteur++;
 
+            compteur++;
         }
-        tabsommet[indice2].tabPrecedence[compteur]=temp1; // rajoute l'element a la fin
-        tabsommet[indice2].tabPrecedence = realloc(tabsommet[temp2].tabPrecedence, sizeof(int) * (compteur + 2)); // realloue un nouvelle espace plus grand
+
+        tabsommet[indice2].tabPrecedence[compteur] = temp1; // rajoute l'element a la fin
+        tabsommet[indice2].tabPrecedence = realloc(tabsommet[indice2].tabPrecedence,(compteur+2)*sizeof(int)); // realloue un nouvelle espace plus grand
+        printf("%d\n",tabsommet[indice2].tabPrecedence[0]);
         tabsommet[indice2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
-        compteur = 0; // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
+        // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
     }
     fclose(f);
 }

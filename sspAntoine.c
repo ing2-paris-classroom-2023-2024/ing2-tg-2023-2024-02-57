@@ -8,7 +8,6 @@ int renvoie_sommet(int num, t_sommet *tabsommet)
 {
     for (int i = 0; i < tabsommet[0].nbrStep; i++)
     {
-        ///printf("num chercher %d \t indice : %d\n",num,i);
         if(tabsommet[i].num == num)
             return i;
     }
@@ -322,7 +321,7 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
 
     ///on associe maintenant a chaque étape un temps
 
-
+    precedences(NOMFICHIER,tabsommet);
     exclusion(EXCLUSION,tabsommet);
     operation(FILENAME,tabsommet);
 
@@ -340,9 +339,9 @@ int attribTOT(t_sommet *tabsommet)
         if (tabsommet[i].box == 0)
             return 0;
     }
-
     return 1;
 }
+
 
 void trieBOXtot(t_sommet *tabsommet)
 {
@@ -354,83 +353,132 @@ void trieBOXtot(t_sommet *tabsommet)
     ///il se réinitialise a chaque changement de boucle
     int *tailleBox;
     int nbrBox = 1;
-    tailleBox = malloc(sizeof (int )*nbrBox);
+    tailleBox = malloc(sizeof (int )*(nbrBox+1));
+    tailleBox[0] = 0;
+    tailleBox[1] = 0;
+
     t_sommet **box;
-    box = (t_sommet**) malloc(sizeof (t_sommet));
+    box = (t_sommet**) malloc(sizeof (t_sommet *)*2);
     box[0] = malloc(sizeof (t_sommet));
+    box[1] = malloc(sizeof (t_sommet));
+
     int nbrPrecedences;
     int compteur_precedences;
     do {
         for (int i = 0 ; i < tabsommet[0].nbrStep; i++)
         {
-            ///on commence par reegarder si le sommet a des précédances
-            compteur_precedences = 0;
-
-            while (tabsommet[i].tabPrecedence[compteur_precedences] != 0)
+            if(tabsommet[i].box == 0)
             {
-                for (int j = 1; j <= nbrBox -1; j++)
-                {
-                    for (int k = 0; k < tailleBox[j]; k++)
-                    {
-                        if(tabsommet[i].tabPrecedence[compteur_precedences] == box[j][k].num)
+
+                ///on commence par reegarder si le sommet a des précédances
+                compteur_precedences = 0;
+                nbrPrecedences = 0;
+                test = 0;
+
+
+
+
+                while (tabsommet[i].tabPrecedence[compteur_precedences] != 0) {
+                    for (int j = 1; j <= nbrBox; j++) {
+                        for (int k = 0; k < tailleBox[j]; k++)
                         {
-                            nbrPrecedences++;
+                            printf("taille box %d : %d %u\n",j,k,box[j][k]);
+                            if (tabsommet[i].tabPrecedence[compteur_precedences] == box[j][k].num) {
+                              //  printf("BBBBBBBBBBBBBBBBBB\n");
+                                nbrPrecedences++;
+                            }
                         }
                     }
                     compteur_precedences++;
                 }
 
-            }
-            ///cela signifie que tous les sommets de précédences ont été placé dans chaque box
-            if (nbrPrecedences == compteur_precedences)
-            {
-                test = 0;
-            }
 
-            ///si le sommet a passer les test de précédences alors on regarde la contrainte d'exclusion
-            if (!test)
-            {
-                for (int i = 1; i < tabsommet[0].nbrStep; i++)
-                {
+
+                ///cela signifie que tous les sommets de précédences ont été placé dans chaque box
+                if (nbrPrecedences == compteur_precedences) {
+                    test = 0;
+
+                } else
+                    test = 1;
+
+                printf("%d %d     %d %d\n",test,i,compteur_precedences,nbrPrecedences);
+
+
+                ///si le sommet a passer les test de précédences alors on regarde la contrainte d'exclusion
+                if (!test) {
 
                     condition = 0;
 
-                    if(tabsommet[i].boxexclu == 0)
-                    {
-                        for (int j = 0; j <= tailleBox[nbrBox]; j++)
-                        {
-                            compteurExclusion = 0;
-                            while (tabsommet[i].tabExclusion[compteurExclusion]!=0)
-                            {
-                                if (tabsommet[i].tabExclusion[compteurExclusion] == box[nbrBox][j].num)
-                                {
-                                    condition = 1;
-                                    break;
-                                }
-                                compteurExclusion++;
-                            }
 
+                    for (int j = 0; j < tailleBox[nbrBox]; j++) {
+                        compteurExclusion = 0;
+                        while (tabsommet[i].tabExclusion[compteurExclusion] != 0) {
 
-                            if(condition)
+                            if (tabsommet[i].tabExclusion[compteurExclusion] == box[nbrBox][j].num) {
+                                condition = 1;
                                 break;
+                            }
+                            compteurExclusion++;
                         }
 
-                        if (!condition)
-                        {
-                            printf("box %d taille %d \n",nbrBox,tailleBox[nbrBox]);
-                            for (int j = 0; j < tailleBox[nbrBox]; j++)
-                            {
-                                printf("sommet box %d, num %d, nom %d\n",nbrBox,j,box[nbrBox][j].num);
-                            }
-                            tabsommet[i].boxexclu = nbrBox ;
-                            box[nbrBox][tailleBox[nbrBox]] = tabsommet[i];
-                            tailleBox[nbrBox]++;
-                            box[nbrBox] = realloc(box[nbrBox],sizeof (t_sommet ) * (tailleBox[nbrBox]+2));
-                            box[nbrBox][tailleBox[nbrBox]] = tabsommet[0];
+
+                        if (condition)
+                            break;
+
+                    }
+
+                    if (!condition) {
+
+                        tabsommet[i].box = nbrBox;
+                        //printf("AAAAAAAAAAAAAAAAAAA %.2f %d %d\n",tabsommet[i].tabOperationTemps,tailleBox[nbrBox],nbrBox);
+
+                        box[nbrBox][tailleBox[nbrBox]] = tabsommet[i];
+
+
+                        tailleBox[nbrBox]++;
+
+                        //printf("box %d taille %d \n", nbrBox, tailleBox[nbrBox]);
+
+                        for (int j = 0; j < tailleBox[nbrBox]; j++) {
+                            printf("sommet box %d, num %d, nom %d, nom i : %d %d\n", nbrBox, j, box[nbrBox][j].num,tabsommet[i].num, i);
                         }
+                        box[nbrBox] = realloc(box[nbrBox], sizeof(t_sommet) * (tailleBox[nbrBox] + 2));
+                        box[nbrBox][tailleBox[nbrBox]] = tabsommet[0];
+                        box[nbrBox][tailleBox[nbrBox]].num = 0;
+
                     }
                 }
             }
         }
+        if (!attribTOT(tabsommet))
+        {
+            ///on crée alors une nouvelle box
+            nbrBox++;
+            tailleBox =(int*) realloc(tailleBox,(nbrBox+2)*sizeof(int ));
+            tailleBox[nbrBox] = 0;
+            box = realloc(box,sizeof(t_sommet*) * (nbrBox+2));
+            box[nbrBox] = malloc(sizeof(t_sommet)*(tailleBox[nbrBox]+2));
+
+        }
     } while (!attribTOT(tabsommet));
+
+                         /// MAINTENANT ON CHERCHE A AFFICHER NOS RESULTATS ///
+
+    for (int i = 1; i <= nbrBox; i++)
+    {
+        printf("----------------------------------------------------------------------------------------\n");
+        printf("||| STATION : %d |||  Nombre Operation : %d ||| Temp global : %.2f\n",i,tailleBox[i],12.5);
+        printf("----------------------------------------------------------------------------------------\n");
+
+        for (int j = 0; j < tailleBox[i]; j++)
+        {
+            printf("%d\t",box[i][j].num);
+        }
+        printf("\n");
+        printf("----------------------------------------------------------------------------------------\n");
+        printf("\n");
+        printf("\n");
+
+
+    }
 }
