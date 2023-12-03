@@ -19,7 +19,7 @@ int detecterNombreLignes(char* NOMFICHIER) {
     }
 
     while (fscanf(f, "%d%*[^\n]", &nombrePresent) == 1) {
-        fgetc(f); // Lire et ignorer le saut de ligne
+        //fgetc(f); // Lire et ignorer le saut de ligne
         nombreLignes++; // Incrémente le compteur pour chaque ligne commençant par un nombre
     }
 
@@ -123,7 +123,7 @@ void boxPrecedences(t_sommet *tabsommet) {
             printf("nombre preceddence a trouver%d\n",precedenceATROUVER);
         }
     }
-    /*   for (int i = 0; i < nbOperations; ++i) {
+       for (int i = 0; i < nbOperations; ++i) {
            if (tabsommet[i].tabPrecedence[0] == 0) {
                box[0][tailleBox[0]] = tabsommet[i];
                printf("ajout box 1\n");
@@ -190,7 +190,7 @@ void boxPrecedences(t_sommet *tabsommet) {
                }
            }
        }
-   */
+
     for (int i = 0; i < 4; ++i) {
         printf("\n_________Box %d : ", i + 1);
         for (int j = 0; j < tailleBox[i]; ++j) {
