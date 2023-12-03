@@ -173,7 +173,7 @@ void BoxExclusion(t_sommet *tabsommet)
         {
             break;
         }
-        printf("ATTRIB SOMMET : %d", sommetsAttrib(tabsommet));
+        //printf("ATTRIB SOMMET : %d", sommetsAttrib(tabsommet));
 
     } while (sommetsAttrib(tabsommet));
 
