@@ -209,13 +209,13 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
     t_sommet *tabsommet;
     int test1,test2;
     int temp1,temp2;
-    int plusgrandnombre = 0;
+    int plusgrandnombre;
     int compteur_nombre_sommet = 0;
     int *tabnumsommet;      //tableau permettant de stocker les sommets
 
     plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER); //detecte le plus grand sommet
 
-    tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre + 1 ) );
+    tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre /*+ 1*/ ) );
 
     FILE *f;
 
@@ -248,7 +248,7 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
             printf("nouveau sommet : %d\n",temp1);
             tabnumsommet[compteur_nombre_sommet] = temp1;
             compteur_nombre_sommet++;
-            tabnumsommet[compteur_nombre_sommet] = 0;
+            /*tabnumsommet[compteur_nombre_sommet] = 0*/;
             test1 = 1;
 
         }
@@ -257,14 +257,14 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
             printf("nouveau sommet : %d\n",temp2);
             tabnumsommet[compteur_nombre_sommet] = temp2;
             compteur_nombre_sommet++;
-            tabnumsommet[compteur_nombre_sommet] = 0;
+            /*tabnumsommet[compteur_nombre_sommet] = 0*/;
             test2 = 1;
 
         }
     }
     fclose(f);
 
-    tabsommet = (t_sommet *) malloc((compteur_nombre_sommet+1)*sizeof(t_sommet));
+    tabsommet = (t_sommet *) malloc((compteur_nombre_sommet/*+1*/)*sizeof(t_sommet));
 
     for (int i = 0; i <= compteur_nombre_sommet; i++)
     {
@@ -282,12 +282,6 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
         tabsommet[i].tabPrecedence[0]=0;
         tabsommet[i].boxexclu = 0;
         tabsommet[i].box = 0;
-
-        // tabsommet[i].tabOperationTemps = malloc(sizeof (float ) * 2);
-        // tabsommet[i].tabOperationTemps[0]=0;
-
-
-
     }
 
 
@@ -306,7 +300,6 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION)
                 buffer = tabsommet[i];
                 tabsommet[i] = tabsommet[j];
                 tabsommet[j] = buffer;
-
             }
         }
     }
