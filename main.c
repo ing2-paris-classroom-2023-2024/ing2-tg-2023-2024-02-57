@@ -13,10 +13,14 @@ int main()
     strcpy(NOMFICHIER,"../exclusion.txt");
     char FILENAME[32];
     strcpy(FILENAME,"../operation.txt");
+    char FILENAMEE[32];
+    strcpy(FILENAMEE,"../temps_de_cycle.txt");
 
     t_sommet *tabsommet;
 
     tabsommet = allouerTabSommet(NAMEFILE,FILENAME,NOMFICHIER);
+
+    tempsCycle(FILENAMEE,tabsommet);
 
     //printf("%d\n",tabsommet[0].nbrStep);
     //BoxExclusion(tabsommet);

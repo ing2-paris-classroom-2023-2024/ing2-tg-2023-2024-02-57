@@ -397,6 +397,13 @@ void trieBOXtot(t_sommet *tabsommet)
 
                 printf("%d %d     %d %d\n",test,i,compteur_precedences,nbrPrecedences);
 
+                if(!test)
+                {
+                    if (tempOpe(box[nbrBox],tailleBox[nbrBox]>tabsommet[0].tabTemps_cycle))
+                    {
+                        test = 1;
+                    }
+                }
 
                 ///si le sommet a passer les test de précédences alors on regarde la contrainte d'exclusion
                 if (!test) {
@@ -462,7 +469,7 @@ void trieBOXtot(t_sommet *tabsommet)
     {
         temps = tempOpe(box[i],tailleBox[i]);
         printf("----------------------------------------------------------------------------------------\n");
-        printf("||| STATION : %d |||  Nombre Operation : %d ||| Temp global : %.2f\n",i,tailleBox[i],temps);
+        printf("||| STATION : %d |||  Nombre Operation : %d ||| Temp global : %.2f |||\n",i,tailleBox[i],temps);
         printf("----------------------------------------------------------------------------------------\n");
 
         for (int j = 0; j < tailleBox[i]; j++)

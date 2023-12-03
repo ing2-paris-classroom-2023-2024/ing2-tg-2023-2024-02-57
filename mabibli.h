@@ -31,7 +31,7 @@ int sommetsAttrib(t_sommet* tabsommet);
 void exclusion(char* NOMFICHER,t_sommet* tabsommet);
 void BoxExclusion(t_sommet *tabsommet);
 void operation(char *NOMFICHIER,t_sommet *tabsommet);
-float tempsCycle(char *NOMFICHIER, t_sommet *tabsommet);
+void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet);
 void boxPrecedences(t_sommet *tabsommet);
 void precedences(char *NOMFICHIER,t_sommet *tabsommet);
 void impressionSommetPrecedence(t_sommet *tabsommet);

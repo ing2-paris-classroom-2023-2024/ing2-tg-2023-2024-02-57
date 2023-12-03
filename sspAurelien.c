@@ -33,20 +33,20 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
     fclose(f);// fermeture du fichier
 }
 /// ENREGISTRE LE TEMPS DE CYCLE TOTALE
-float tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
+void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
     FILE *f;
-    int temp1;
+    float temp1;
     f = fopen(NOMFICHIER, "r");
     if(f==NULL){
         printf("Erreur lors de l'ouverture du fichier.\n");
-        return 0;
+        exit(-1);
     }
-    for(int i=0; i <1; i++){
-        fscanf(f, "%d", &temp1);
+    fscanf(f, "%f", &temp1);
+    for(int i=0; i < tabsommet[0].nbrStep ; i++)
+    {
         tabsommet[i].tabTemps_cycle = temp1;
     }
     fclose(f);
-    return tabsommet[0].tabTemps_cycle;
 }
 
 /// CALCULE LE TEMPS MAXIMALE POUR QUE TOUTES LES STATIONS D'UNE BOXE SOIT EXECUTES
@@ -69,12 +69,12 @@ void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox, t_sommet
         printf("La box %d a pour temps: %.2f\n", i, time_to_return);
     }
     printf("Le temps totale de cycle est de: %.2f\n", addition_temps);
-    printf("Le temps de cycle maximale etait de %.2f ", tempsCycle(NOMFICHIER, tabsommet));
-    if(addition_temps < tempsCycle(NOMFICHIER, tabsommet)){
-        printf("donc le temps de cycle est finalement plus court que celui attendu\n");
-    }
-    else{
-        printf("donc le temps de cycle depasse malheureusement les attentes\n");
-    }
+    //printf("Le temps de cycle maximale etait de %.2f ", tempsCycle(NOMFICHIER, tabsommet));
+    //if(addition_temps < tempsCycle(NOMFICHIER, tabsommet)){
+    //    printf("donc le temps de cycle est finalement plus court que celui attendu\n");
+    //}
+    //else{
+    //    printf("donc le temps de cycle depasse malheureusement les attentes\n");
+    //}
 }
 
