@@ -318,7 +318,7 @@ t_sommet *allouerTabSommet(char *PRECEDENCES, char *OPERATION, char *EXCLUSION, 
     //printf("nombre de sommets : %d\n",compteur_nombre_sommet);
     for (int i = 0; i < compteur_nombre_sommet; i++)
     {
-        printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
+        //printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
     }
     /// tri validé
 

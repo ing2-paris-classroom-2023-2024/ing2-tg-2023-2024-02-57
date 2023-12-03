@@ -85,7 +85,7 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
         tabsommet[indice2].tabPrecedence[compteur] = temp1; // rajoute l'element a la fin
         //printf("test %d      %d %d\n",compteur,tabsommet[indice2].num,tabsommet[indice2].tabPrecedence[0]);
         tabsommet[indice2].tabPrecedence = realloc(tabsommet[indice2].tabPrecedence,(compteur+2)*sizeof(int)); // realloue un nouvelle espace plus grand
-        printf("test 2\n");
+        //printf("test 2\n");
         tabsommet[indice2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
     }
     fclose(f);
