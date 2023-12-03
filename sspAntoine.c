@@ -340,6 +340,7 @@ void trieBOXtot(t_sommet *tabsommet)
 {
     ///On commence par voir les précédences puis apres on regarde les exclusions
     int condition = 0;
+    float temps = 0;
     int compteurExclusion = 0;
     int test = 0;
     ///le test a pour valeur 0 si il ne remplis pas une des demande il prend la valeur de 1
@@ -459,8 +460,9 @@ void trieBOXtot(t_sommet *tabsommet)
 
     for (int i = 1; i <= nbrBox; i++)
     {
+        temps = tempOpe(box[i],tailleBox[i]);
         printf("----------------------------------------------------------------------------------------\n");
-        printf("||| STATION : %d |||  Nombre Operation : %d ||| Temp global : %.2f\n",i,tailleBox[i],12.5);
+        printf("||| STATION : %d |||  Nombre Operation : %d ||| Temp global : %.2f\n",i,tailleBox[i],temps);
         printf("----------------------------------------------------------------------------------------\n");
 
         for (int j = 0; j < tailleBox[i]; j++)
@@ -474,4 +476,15 @@ void trieBOXtot(t_sommet *tabsommet)
 
 
     }
+}
+
+float tempOpe(t_sommet *tabsommet,int taille)
+{
+    float time_to_return = 0;
+    for (int i = 0; i < taille; i++)
+    {
+        time_to_return += tabsommet[i].tabOperationTemps;
+
+    }
+    return time_to_return;
 }

@@ -36,5 +36,6 @@ void boxPrecedences(t_sommet *tabsommet);
 void precedences(char *NOMFICHIER,t_sommet *tabsommet);
 void impressionSommetPrecedence(t_sommet *tabsommet);
 int detecterPlusGrandNombre(char *NOMFICHIER);
+float tempOpe(t_sommet *tabsommet,int taille);
 void trieBOXtot(t_sommet *tabsommet);
 void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox, t_sommet *tabsommet);
