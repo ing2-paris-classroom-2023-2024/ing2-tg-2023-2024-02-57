@@ -25,7 +25,7 @@ typedef struct sommet
 }t_sommet;
 
 int detecterNombreLignes(char* NOMFICHIER);
-t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char* FICHIERCYCLE);
+t_sommet *allouerTabSommet(char *PRECEDENCES, char *OPERATION, char *EXCLUSION, char* FICHIERCYCLE);
 int renvoie_sommet(int num, t_sommet *tabsommet);
 int sommetsAttrib(t_sommet* tabsommet);
 void exclusion(char* NOMFICHER,t_sommet* tabsommet);
@@ -36,6 +36,7 @@ void boxPrecedences(t_sommet *tabsommet);
 void precedences(char *NOMFICHIER,t_sommet *tabsommet);
 void impressionSommetPrecedence(t_sommet *tabsommet);
 int detecterPlusGrandNombre(char *NOMFICHIER);
+void BOXPRECEDENCES(t_sommet *tabsommet);
 float tempOpe(t_sommet *tabsommet,int taille);
 void trieBOXtot(t_sommet *tabsommet);
 void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox, t_sommet *tabsommet);

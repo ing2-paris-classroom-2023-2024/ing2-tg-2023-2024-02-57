@@ -203,7 +203,7 @@ void BoxExclusion(t_sommet *tabsommet)
     free(BOX);
 }
 
-t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char* FICHIERCYCLE)
+t_sommet *allouerTabSommet(char *PRECEDENCES, char *OPERATION, char *EXCLUSION, char* FICHIERCYCLE)
 {
     t_sommet *tabsommet;
     int test1,test2;
@@ -212,20 +212,20 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char
     int compteur_nombre_sommet = 0;
     int *tabnumsommet;      //tableau permettant de stocker les sommets
 
-    plusgrandnombre = detecterPlusGrandNombre(NOMFICHIER); //detecte le plus grand sommet
+    plusgrandnombre = detecterPlusGrandNombre(PRECEDENCES); //detecte le plus grand sommet
 
     tabnumsommet = (int *) malloc(sizeof (int ) * (plusgrandnombre /*+ 1*/ ) );
 
     FILE *f;
 
-    f = fopen(NOMFICHIER,"r");
+    f = fopen(PRECEDENCES, "r");
 
     if(f==NULL)
     {
         printf("erreur ouverture fichier allouer tableau sommet");
         exit(-1);
     }
-    for (int i = 0; i < detecterNombreLignes(NOMFICHIER); i++)
+    for (int i = 0; i < detecterNombreLignes(PRECEDENCES); i++)
     {
 
         test1 = 0;
@@ -233,6 +233,7 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char
         fscanf(f,"%d %d\n",&temp1,&temp2);
         for (int j = 0; j <= compteur_nombre_sommet; j++)
         {
+
             if (temp1 == tabnumsommet[j])
             {
                 test1 = 1;
@@ -263,6 +264,8 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char
     }
     fclose(f);
 
+
+
     tabsommet = (t_sommet *) malloc((compteur_nombre_sommet/*+1*/)*sizeof(t_sommet));
 
     for (int i = 0; i <= compteur_nombre_sommet; i++)
@@ -277,11 +280,17 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char
             tabsommet[i].tabExclusion[j] = 0;
         }
 
-        tabsommet[i].tabPrecedence = malloc(sizeof (int ));// alloue dynamiquement un tableau dde precedence pour le sommet i
-        tabsommet[i].tabPrecedence[0]=0;
+        tabsommet[i].tabPrecedence = malloc(compteur_nombre_sommet * sizeof (int ));// alloue dynamiquement un tableau d'exclusion pour le sommet i
+
+        for (int j = 0; j < compteur_nombre_sommet; j++)
+        {
+            tabsommet[i].tabPrecedence[j] = 0;
+        }
+
         tabsommet[i].boxexclu = 0;
         tabsommet[i].box = 0;
     }
+
 
 
 
@@ -304,20 +313,22 @@ t_sommet *allouerTabSommet(char *NOMFICHIER,char *FILENAME,char *EXCLUSION, char
     }
 
 
+
     ///ici on fait des printf afin de verifier si les sommets sont bien trié
     //printf("nombre de sommets : %d\n",compteur_nombre_sommet);
     for (int i = 0; i < compteur_nombre_sommet; i++)
     {
-        //printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
+        printf("sommet n %d a comme nom %d\n",i,tabsommet[i].num);
     }
     /// tri validé
 
     ///on associe maintenant a chaque étape un temps
 
-    precedences(NOMFICHIER,tabsommet);
+    precedences(PRECEDENCES, tabsommet);
+    printf("test\n");
     tempsCycle(FICHIERCYCLE, tabsommet);
     exclusion(EXCLUSION,tabsommet);
-    operation(FILENAME,tabsommet);
+    operation(OPERATION, tabsommet);
 
 
 

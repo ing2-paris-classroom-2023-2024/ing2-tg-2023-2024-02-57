@@ -61,7 +61,6 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
     }
 
     int indice2 = 0;
-    int indice1 = 0;
 
     int nbrLigne = detecterNombreLignes(NOMFICHIER); // detecte le nombre de ligne du fichier precedences.txt
     for (int i = 0; i < nbrLigne; ++i)
@@ -72,23 +71,22 @@ void precedences(char *NOMFICHIER,t_sommet *tabsommet){ // lis precedences et cr
 
 
         indice2 = renvoie_sommet(temp2,tabsommet);
-        //indice1 = renvoie_sommet(temp1,tabsommet);
 
-        //printf("test %d %d %d %d %d\n",i,temp2,indice2,temp1,tabsommet[indice2].tabPrecedence[0]);
 
         compteur = 0;
 
-        while (tabsommet[indice2].tabPrecedence[compteur] != 0)
-        {
 
+        while (tabsommet[indice2].tabPrecedence[compteur] != 0 )
+        {
             compteur++;
         }
 
+
         tabsommet[indice2].tabPrecedence[compteur] = temp1; // rajoute l'element a la fin
+        //printf("test %d      %d %d\n",compteur,tabsommet[indice2].num,tabsommet[indice2].tabPrecedence[0]);
         tabsommet[indice2].tabPrecedence = realloc(tabsommet[indice2].tabPrecedence,(compteur+2)*sizeof(int)); // realloue un nouvelle espace plus grand
-        //printf("%d\n",tabsommet[indice2].tabPrecedence[0]);
+        printf("test 2\n");
         tabsommet[indice2].tabPrecedence[compteur + 1] = 0; //initialise l'element suivant a 0
-        // remet le compteur a 0 pour que le prochain tableau soit de nouveau parcouru a partir de 0
     }
     fclose(f);
 }

@@ -7,16 +7,17 @@
 
 int main()
 {
-    char NAMEFILE[32];
-    strcpy(NAMEFILE,"../precedences.txt");
-    char NOMFICHIER[32];
-    strcpy(NOMFICHIER,"../exclusion.txt");
-    char FILENAME[32];
-    strcpy(FILENAME,"../operation.txt");
-    char FILENAMEE[32];
-    strcpy(FILENAMEE,"../temps_de_cycle.txt");
+    char precedences[32];
+    strcpy(precedences,"../precedences.txt");
+    char exclusion[32];
+    strcpy(exclusion,"../exclusion.txt");
+    char operation[32];
+    strcpy(operation,"../operation.txt");
+    char tempCycle[32];
+    strcpy(tempCycle,"../temps_de_cycle.txt");
 
     t_sommet *tabsommet;
+    int choix = 0 ;
 
     tabsommet = allouerTabSommet(precedences, operation, exclusion, tempCycle);
 
