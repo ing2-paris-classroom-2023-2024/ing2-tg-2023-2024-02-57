@@ -560,8 +560,8 @@ void BOXPRECEDENCES(t_sommet *tabsommet)
                     //printf("box %d taille %d \n", nbrBox, tailleBox[nbrBox]);
 
                     for (int j = 0; j < tailleBox[nbrBox]; j++) {
-                        //printf("sommet box %d, num %d, nom %d, nom i : %d %d\n", nbrBox, j, box[nbrBox][j].num,
-                        //tabsommet[i].num, i);
+                        /*printf("sommet box %d, num %d, nom %d, nom i : %d %d\n", nbrBox, j, box[nbrBox][j].num,
+                        tabsommet[i].num, i);*/
                     }
                     box[nbrBox] = realloc(box[nbrBox], sizeof(t_sommet) * (tailleBox[nbrBox] + 2));
                     box[nbrBox][tailleBox[nbrBox]] = tabsommet[0];
