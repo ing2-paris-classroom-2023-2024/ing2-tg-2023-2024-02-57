@@ -4,6 +4,7 @@
 
 #include "mabibli.h"
 
+/// ENREGISTRE LE NOMS DES OPERATIONS ET LEUR TEMPS D'EXECUTION
 void operation(char *NOMFICHIER,t_sommet *tabsommet){
     FILE *f;
     int numSommet;
@@ -31,26 +32,29 @@ void operation(char *NOMFICHIER,t_sommet *tabsommet){
     }
     fclose(f);// fermeture du fichier
 }
-
-void tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
+/// ENREGISTRE LE TEMPS DE CYCLE TOTALE
+float tempsCycle(char *NOMFICHIER, t_sommet *tabsommet){
     FILE *f;
     int temp1;
     f = fopen(NOMFICHIER, "r");
     if(f==NULL){
         printf("Erreur lors de l'ouverture du fichier.\n");
-        return;
+        return 0;
     }
-    for(int i=0; i< detecterNombreLignes(NOMFICHIER); i++){
+    for(int i=0; i <1; i++){
         fscanf(f, "%d", &temp1);
         tabsommet[i].tabTemps_cycle = temp1;
-        printf("Le temps du cycle est de %.2f secondes\n", tabsommet[i].tabTemps_cycle);
     }
     fclose(f);
+    return tabsommet[0].tabTemps_cycle;
 }
 
-
-void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox)
+/// CALCULE LE TEMPS MAXIMALE POUR QUE TOUTES LES STATIONS D'UNE BOXE SOIT EXECUTES
+void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox, t_sommet *tabsommet)
 {
+    char NOMFICHIER[32];
+    strcpy(NOMFICHIER,"../temps_de_cycle.txt");
+    float addition_temps= 0;
     float time_to_return;
     for(int i=1; i<=nbrBox; i++){
         time_to_return=0;
@@ -61,7 +65,16 @@ void calcule_temps_tabsommet(t_sommet **box, int nbrBox,int *tailleBox)
                 time_to_return = box[i][j].tabOperationTemps;
             }
         }
+        addition_temps += time_to_return;
         printf("La box %d a pour temps: %.2f\n", i, time_to_return);
+    }
+    printf("Le temps totale de cycle est de: %.2f\n", addition_temps);
+    printf("Le temps de cycle maximale etait de %.2f ", tempsCycle(NOMFICHIER, tabsommet));
+    if(addition_temps < tempsCycle(NOMFICHIER, tabsommet)){
+        printf("donc le temps de cycle est finalement plus court que celui attendu\n");
+    }
+    else{
+        printf("donc le temps de cycle depasse malheureusement les attentes\n");
     }
 }
 

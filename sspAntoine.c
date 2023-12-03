@@ -200,7 +200,7 @@ void BoxExclusion(t_sommet *tabsommet)
         printf("\n");
 
     }
-    calcule_temps_tabsommet(BOX,nbrBox,tailleBox);
+    calcule_temps_tabsommet(BOX,nbrBox,tailleBox, tabsommet);
     free(BOX);
 }
 
